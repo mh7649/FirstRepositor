@@ -1,0 +1,12 @@
+eclipse的导航
+Navigate菜单
+		Open Type（ctrl +shift + t）打开某个指定名称的类
+		Open Declaration F3，打开鼠标指针所指向的那个类
+		Open Type Hierarchy F4，打开类的继承关系（哪个子类继承了指定的类，哪个实现类实现了指定的接口）
+		Open Call Hierarchy (ctrl + alt + h)，打开某个在其他的哪个类的哪个方法中调用了
+		Open Implementation，打开某个接口的实现类
+		Open Resource，可以根据任何一个文件的名称模糊查找指定的文件
+
+Search 
+		File   在指定文件类型中搜索指定的关键字
+		Java Search，搜索Java类里的方法，类名称，包

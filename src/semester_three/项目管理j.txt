@@ -1,0 +1,64 @@
+﻿1、项目构建工具
+	Apache ANT:项目构建jar, war
+	Apache Maven:基于xml的项目依赖及项目构建，部署的工具
+	Gradle:Android官方项目构建工具    Android Studio(IDE)
+	
+2、Maven项目依赖
+
+3、Maven基本概念
+	1）仓库repository，用于存储jar包
+		中央仓库：http://search.maven.org
+		MVN: https://mvnrepository.com/
+		
+		本地仓库：
+			在开发人员的计算机上建立一个用于存储jar的目录
+				C:\Users\Master\.m2\repository
+				
+	2）依赖 dependency
+		Struts-core.jar:commons-io.jar, commons-logging.jar, commons-fileupload.jar, freemarker.jar
+		
+	3）groupId 组id
+		artifactId 项目id
+		version 版本号
+		唯一标识出一个jar包
+		
+	4）Maven项目
+		src/main/java 存储Java源代码
+		src/main/resources 存储Java项目代码中所使用到的资源文件
+		
+		src/test/java 存储Java的测试代码
+		src/test/resources 存储java测试代码所使用的资源
+	
+	5）pom.xml,Maven的配置文件，存储于项目的根路径，每个maven项目都必须有
+		可以定义自己项目的groupId, artifactId, version
+		可以指明用到哪些网络仓库
+		指明依赖关系
+		定义变量，引用变量
+4、使用eclipse创建maven项目
+	1）右键-》Project->Maven->Maven Project
+	2)选择工作空间
+	3）选择项目类型，默认的quickstart
+	4)输入groupId, artifact id, version-->Finish
+	
+	添加资源目录
+	1）项目右键-》Build Path->Configure -> Sources ->Add Folder
+	2)Create New Folder-->src/main/resources->OK
+	
+	整合JavaWEB项目
+	1）项目右键-》Properties->Project Facets(用于配置项目所使用的一些框架)-》Convert Project Facets fom
+	2)勾选Dynamic Web Module,使用默认版本
+	3）Further Configuration -> 产生web.xml->ok->ok
+	4)web项目测试
+	
+	最后一个步骤：
+	项目右键-》Properties->Deployment Assmbly->Add...->Java Build Path entries->Maven Dependencies->ok
+	
+5、包冲突
+		两个或多个包引用了一个同样的包A1.0  A1.1，但是版本不一样
+		把其中一个引用的包A1.0排除
+		<exclusions>
+			<exclusion>
+				<groupId></groupId>
+				<artifactId></artifactId>
+			</exclusion>
+		</exclusions>

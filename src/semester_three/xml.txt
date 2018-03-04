@@ -1,0 +1,129 @@
+1、XML
+	Extensible Markup Language  可扩展标记语言
+		XML 指可扩展标记语言
+		XML 被设计用来传输和存储数据
+		XML 指可扩展标记语言（EXtensible Markup Language）
+		XML 是一种标记语言，很类似 HTML
+		XML 的设计宗旨是传输数据，而非显示数据
+		XML 标签没有被预定义。您需要自行定义标签。
+		XML 被设计为具有自我描述性。
+		XML 是 W3C 的推荐标准
+	HT ML Hyper Text Markup Language
+		第一行 <!doctype html>
+	
+2、DOM树
+	document object model文档对象模型
+	
+3、xml的编写 
+	第一行：文档类型声明
+		<?xml version="1.0" encoding="utf-8"?>
+	最外层必须包含有根元素，有且只有一个根元素
+	
+4、
+如果仅是符合xml的基本语法，则称之为形式良好(well formed)的xml
+如果没有一定的规则来限定xml的标签及位置等，这样的xml文档称为不合法的xml文档
+	合法的xml文档：xml文档的标签，属性等按照指定的规则来定义的文档，并且可以使用此规则来验证这个xml文档
+	
+	dtd:用于定义xml文档的元素及属性的规则 
+	schema:用于定义xml文档的元素及属性的规则（用于替代dtd）
+	
+5、xml使用注意事项
+	1)大小写敏感
+	2）必须包含有根元素
+	3）不能出现不合法的嵌套
+	4）属性值使用双引号扩起来
+	5）必须要有结束（必须把标签关闭）
+	6）有必要使用实体引用 
+		> &gt; >= &ge; < &lt; <= &le;   &   &amp;  ' &apos   " &quot;
+	7)注释  <!-- -->
+	8)XML 中，空格会被保留
+	
+6、xml命名空间
+	XML 命名空间提供避免元素命名冲突的方法
+	<xs:aa>表示 aa标签来源于xs命名空间
+	
+7、CDATA
+	所有 XML 文档中的文本均会被解析器解析。
+	只有 CDATA 区段（CDATA section）中的文本会被解析器忽略。
+	
+	PCDATA 指的是被解析的字符数据（Parsed Character Data）。文本内容
+	
+	写法：
+	<![CDATA[
+	select * from t_user;
+	]]>
+	
+8、DTD的使用
+	1）内部dtd
+		xml文档声明的后面一行
+	2）外部dtd
+		文件后缀是.dtd，内容与内部dtd一致
+		SYSTEM:系统级别的
+		PUBLIC：公开的
+		
+		
+	ELEMENT表示元素，必须按照子元素定义的顺序来书写xml文档
+	
+	note (from, to+)   +至少出现一次    *任意次     ?表示最多一次，可有可无
+	
+	note (#PCDATA, (message|content)*)* 可以出现 message或content，并且是任意次
+	
+	
+	ATTLIST表示属性列表
+	<!ATTLIST 元素名称 属性名称 属性类型 默认值>
+	
+	属性类型如下：
+	*****CDATA	值为字符数据 (character data)
+	(en1|en2|..)	此值是枚举列表中的一个值
+	ID	值为唯一的 id
+	IDREF	值为另外一个元素的 id
+	IDREFS	值为其他 id 的列表
+	NMTOKEN	值为合法的 XML 名称
+	NMTOKENS	值为合法的 XML 名称的列表
+	ENTITY	值是一个实体
+	ENTITIES	值是一个实体列表
+	NOTATION	此值是符号的名称
+	xml:	值是一个预定义的 XML 值
+	
+	默认值如下 ：
+	值	属性的默认值
+	#REQUIRED	属性值是必需的
+	#IMPLIED	属性不是必需的
+	#FIXED value	属性值是固定的
+	
+9、XML Schema
+	XML Schema 是基于 XML 的 DTD 替代者。
+	XML Schema 描述 XML 文档的结构。
+	XML Schema 语言也称作 XML Schema 定义（XML Schema Definition，XSD）
+	
+	
+	引用xsd
+	根元素部分的xmlns与xsd定义中的xmlns一致
+	
+	
+	简单元素：
+	<xs:element name="" type="数据类型" />
+	数据类型：
+	xs:string  字符串
+	xs:decimal 实数
+	xs:integer 整数
+	xs:boolean true|false
+	xs:date    日期   2017-06-13   yyyy-MM-dd
+	xs:time    时间   08:52:00     HH:mm:ss
+	
+	复合元素
+	
+	有七种指示器：
+	Order 指示器：
+	All    任意顺序出现 ，只能一次
+	Choice  非此即彼
+	Sequence   必须按照顺序出现 
+	Occurrence 指示器：
+	maxOccurs   默认为1   unbounded  无限制
+	minOccurs   默认为1   
+	Group 指示器：
+	Group name
+	attributeGroup name
+		
+	
+	

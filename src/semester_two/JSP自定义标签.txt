@@ -1,0 +1,120 @@
+1、任何一个JSP标签最终对应于一个Java类
+
+	javax.servlet.jsp.tagext.JspTag接口      所有JSP标签的父接口
+		javax.servlet.jsp.tagext.Tag接口        
+			public static final int SKIP_BODY = 0    忽略标签的内容
+			public static final int EVAL_BODY_INCLUDE = 1    处理标签的内容
+			public static final int SKIP_PAGE = 5    忽略掉标签后的所有内容
+			public static final int EVAL_PAGE = 6    处理标签后的所有内容
+			
+			public void setPageContext(PageContext pageContext);   把当前页面的pageContext内置对象设置到标签的类中
+				pageContext参数是WEB容器传递过来的
+			
+			int doStartTag() throws JspException     处理开始标签
+			int doEndTag() throws JspException       处理结束标签
+			
+		javax.servlet.jsp.tagext.SimpleTag接口
+			public void doTag() throws javax.servlet.jsp.JspException, java.io.IOException   处理标签
+			public void setJspContext( JspContext pc )     设置JSP上下文
+			public void setJspBody( JspFragment jspBody )  设置JSP的内容体
+			
+			
+2、如何编写自定义的标签库并使用它
+	1）写一个类，实现Tag接口  (参考com.gs.taglib.HelloTag类)
+		setPageContext(PageContext pc)
+		setParent(Tag tag);
+		
+		doStartTag() {
+			// pageContext.getJspWriter();
+			out.write();
+			return SKIP_BODY;
+		}
+		
+		doEndTag() {
+			return EVAL_PAGE;
+		}
+		
+	2)必须写一个tld文件来描述定义好的标签
+		WEB-INF目录下，或者WEB-INF目录下的除了lib，classes目录的子目录
+		推荐做法：在WEB-INF目录下创建一个taglib目录专门存储自定义的标签库描述文件
+		
+		mytag.tld
+		
+		文件的内容：
+		<?xml version="1.0" encoding="UTF-8" ?>
+
+		<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+		    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+		    version="2.1">
+		    
+		  <description>It's my taglib</description>
+		  <display-name>My Taglib</display-name>
+		  <tlib-version>1.0</tlib-version>
+		  <short-name>my</short-name>
+		  <uri>http://www.my.com/mytag</uri>
+		  
+		  <!-- 描述一个标签，可以使用多个tag来描述多个标签-->
+		  <tag>
+		    <description>
+		        print "hello"
+		    </description> 
+		    <name>hello</name>
+		    <tag-class>com.gs.taglib.HelloTag</tag-class>
+		    <body-content>JSP</body-content>
+		  </tag>
+		  
+		</taglib>
+		
+	3）在web.xml文件中，声明使用某个定义好的标签库
+		<jsp-config>
+			<taglib>
+				<taglib-uri>http://www.my.com/mytag</taglib-uri>
+      			<taglib-location>/WEB-INF/taglib/mytag.tld</taglib-location>
+			</taglib>
+		</jsp-config>
+		
+	4)在jsp页面中直接使用<%@taglib %>指令来引用标签库
+		<%@taglib prefix="my" uri="http://www.my.com/mytag" %>
+	5）<my:标签的名称 />
+	
+3)如何编写一个带有属性的标签
+	1）写一个自定义的类，实现Tag接口
+		声明一个成员变量，成员变量的名称就是你想要用的属性的名称，并且提供此成员变量的setter方法
+	2）多增加一个<attribute>
+		<attribute>
+	        <description>
+				the message to print
+	        </description>
+	        <name>message</name>  属性的名称，与类里属性保持一致
+	        <required>true</required>    是否为必须的属性
+	        <rtexprvalue>true</rtexprvalue>
+	    </attribute>
+	 在使用的时候，标签得带有属性，属性名为第二步中定义name
+
+4)如何编写带有内容体的标签
+	自定义的标签类中doStartTag()中返回EVAL_BODY_INCLUDE
+	
+5)以后写自定义的标签库，直接继承自TagSupport类就可以了
+	可以直接使用pageContext对象，并且可以使用EVAL_BODY_AGAIN
+	
+	SimpleTagSupport 类（有兴趣的可以自己看下）
+	
+	
+6）在项目中很少用到自定义的标签，但是在权限框架中经常用到
+	<c:choose>
+		<c:when test=""></c:when>
+		<c:otherwise></c:otherwise>
+	</c:choose>
+	
+	根据不同的角色来显示不同的内容
+	
+	自定义权限标签库
+	<my:hasAuth>
+		有权限则显示内容
+	</my:hasAuth>
+	
+7）可以使用jd-gui反编译工具完成class到Java文件的反编译
+	
+	 
+	

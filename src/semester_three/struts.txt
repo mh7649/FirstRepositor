@@ -1,0 +1,397 @@
+1、什么是框架？
+	简化开发人员编码的工具
+	轻量级框架：框架所依赖的其他东西少，相对来说比较少，易学易用，性能相对比较好，开发效率高
+	重量级框架：EJB  Enterprise Java Bean
+	
+	controller层：Struts1    Struts2       SpringMVC
+	service层：new的形式创建对象       Spring完成对象的创建及维护，完成各个层次的整合
+	dao层：Hibernate       MyBatis
+	SSH框架：Struts+Spring+Hibernate
+	SSM框架：SpringMVC+Spring+MyBatis
+	
+	
+	servlet                    struts
+	getParameter               自动获取到相应的Bean
+	web.xml servlet配置                      struts.xml中action的配置
+	过滤器					       定义好的拦截器
+	返回JSON                    json result
+	                                                                   国际化
+	                                                                  
+2、Struts框架
+	http://struts.apache.org/
+	struts1
+	struts2:    struts-2.3.32(用这个)
+				struts-2.5.10
+				
+	Struts1与Struts2的区别：
+	struts2是基于webwork框架，struts1不基于其他的框架
+	struts2代码的侵入性更低依赖性更低
+	
+	struts1是单例模式，线程安全。与servlet有点类似
+	struts2一个请求对应一个实例，不存在线程安全性问题
+	
+	必须的jar包：
+		xwork-core:webwork的核心包
+		commons-lang3:apache commons的核心包
+		asm:对java字节码进行操作及分析的工具
+		asm-commons
+		asm-tree
+		freemarker:模板引擎，用于view层次
+		ognl:Struts2提供的标记语言
+		javassist:字节码操作包
+		commons-fileupload:文件上传
+		commons-io:输入输出
+		struts-core:Struts核心包，基于上面的所有的jar
+		
+3、创建Struts项目
+	1）导入必要的JAR包，如果是Maven，则直接配置依赖的JAR包
+	2）在web.xml文件中引用Struts的核心过滤器
+		<filter>
+		<filter-name>Struts</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>Struts</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	3）编写 action类
+	    不需要继承自任何类，提供一个
+	    public String exeucte() {
+	        return "";
+	    }
+	4)在src根目录中（如果是Maven项目，在src/main/resources）创建一个文件
+	    文件名必须是struts.xml
+	    内容如下：
+	    <?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE struts PUBLIC
+            "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+            "http://struts.apache.org/dtds/struts-2.3.dtd">
+        <struts>
+            <!-- 用于描述包 -->
+        	<package name="my-struts" namespace="/" extends="struts-default">
+        	    <!-- action的配置 -->
+        		<action name="a" class="com.gs.controller.HelloAction">
+        			<result name="success">/hello.jsp</result>
+        		</action>
+        	</package>
+        </struts>
+
+     package: 用于包含多个action，不同的action可以放在同一个包中
+
+        namespace:命名空间，用此属性描述不同的包
+        extends:继承自另外一个包，所有自定义的包都必须继承自struts-default包
+
+        注意：不能有同名的包出现
+            不同包中的action可以同名
+     action: 一个action对应于一个Action类，此类可以用于接收页面的数据，把数据返回到页面
+            一个action就是一个controller
+
+            把多个action组织到一起，放到同一个包中
+
+     result:任何一个action方法的执行都有结果产生，此结果可能是success, fail, error, 不同的结果对应于不同的响应
+        结果的值可以自定义，并且在配置文件中与此结果值保持一致
+        result-types:任何一个结果都有类型，如果result中没有指定类型，则默认为dispatcher类型（转发）
+            dispatcher(转发，默认的)
+            redirect(重定向) 只能重定向到jsp页面
+            redirectAction(重定向到action) 只能重定向到struts的action
+            stream(数据流类型) 文件下载
+            plainText(普通文本数据)
+
+     在action类中默认执行的方法名必须是execute，不管是默认的方法，还是自定义的方法都必须返回String类型的result
+     如果想要指明action执行哪个方法，则method属性指明，但是只支持一个方法的调用
+     如果要多个方法都能调用：
+     1）动态方法调用
+        在自己的配置文件中配置struts.enable.DynamicMethodInvocation常量为true，表示开启动态方法调用
+        同一个action中可以写多个方法，每个方法的return应该不一致
+        在调用的时候，action后面!方法名来调用不同的方法
+
+        此方法不推荐使用
+     2）通配符匹配
+            <action name="*" class="" method="{1}">
+                // {1}最终会被 * 号匹配的部分替换掉
+            </action>
+
+            推荐使用此方法
+	
+4、org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
+	是Struts提供的一个过滤器类，此过滤器需要在web.xml文件中进行配置，把整个项目的url请求全部交给Struts处理
+	
+5、struts-default.xml和struts-default包,default.properties文件
+    struts-default.xml是自带的文件，用于配置struts一些通用的内容：常量，默认包
+    <constant>
+    <bean>    Struts  java类
+    <package name="struts-default">
+        <result></result>
+    </package>
+    <result-types>
+
+6、struts的常量
+    struts.action.extension=action,do,,  配置action的扩展名，推荐使用空扩展名
+    struts.enable.DynamicMethodInvocation = false, 配置struts是否开启动态方法调用
+
+7、如何从jsp页面中传值到action
+    1)在action定义好属性
+    2）如果只是从页面获取值，则提供setter方法
+    3）如果也需要把值返回到页面，则提供getter方法
+    4）在form表单，或者查询字符中，参数名与action中定义的属性一致
+
+    如果属性过多，或者已经有对应的javabean，则应该使用bean组件的方式
+    1）在action中声明bean对象
+    2）提供bean对象的getter与setter
+    3)form表单中，查询字符串中的参数名   对象名.属性名
+
+8、为什么可以获取到参数？为什么可以通过配置获取到类并执行内部的方法？
+    基于Java反射技术
+
+    struts提供了拦截器
+
+9、拦截器
+    在struts-defaul.xml文件中定义了很多拦截器
+    拦截器类似于serlvet中的Filter
+    只要执行一个action，定义好的拦截器就会被执行
+    <interceptor name="conversionError" class="org.apache.struts2.interceptor.StrutsConversionErrorInterceptor"/>
+    负责类型转换错误处理的类
+
+    <interceptor name="cookie" class="org.apache.struts2.interceptor.CookieInterceptor"/>
+    获取cookie的拦截器
+
+    <interceptor name="exception" class="com.opensymphony.xwork2.interceptor.ExceptionMappingInterceptor"/>
+    异常处理拦截器
+
+    <interceptor name="fileUpload" class="org.apache.struts2.interceptor.FileUploadInterceptor"/>
+    文件上传拦截器
+
+    <interceptor name="i18n" class="com.opensymphony.xwork2.interceptor.I18nInterceptor"/>
+    国际化拦截器
+
+    <interceptor name="modelDriven" class="com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor"/>
+    模型驱动拦截器，完成javabean对象的自动封装
+
+    <interceptor name="params" class="com.opensymphony.xwork2.interceptor.ParametersInterceptor"/>
+    参数拦截器，获取表单数据
+
+    <interceptor name="prepare" class="com.opensymphony.xwork2.interceptor.PrepareInterceptor"/>
+    在调用参数拦截器时做预操作
+
+    <interceptor name="token" class="org.apache.struts2.interceptor.TokenInterceptor"/>
+    token拦截器，可用于解决重复提交
+
+    <interceptor name="validation" class="org.apache.struts2.interceptor.validation.AnnotationValidationInterceptor"/>
+    数据验证拦截器
+
+    拦截器栈：多个拦截器，并且按拦截器栈中出现的顺序执行拦截器
+        basic-stack
+        default-stack:struts所使用的默认拦截器栈
+
+10、运行原理
+    ActionContextCleanUp: Struts Action上下文
+    OtherFilter：过滤器
+    FilterDispatcher:struts的核心过滤器，每一个url都过滤
+
+    ActionMapper:action的配置文件，一个action对应于一个Action类
+
+    通过ActionProxy生成action类的代理:生成action的代理过程：1)读取struts.xml文件2）ConfigurationManager3）生成Action代理类
+
+    在代理类执行execute方法或者其他action方法之前，通过拦截器前置方法，execute()  return结果，拦截器的后置方法
+    跑完后置方法后生成响应
+    响应返回到到客户端
+
+    1）发送请求到服务端
+    2）经过struts的上下文件及其他过滤器
+    3）actionmapper接收到请求
+    4）ActionMapper把请求转交给sturts的核心过滤器
+    5）由核心过滤器转交给ActionProxy（Action代理类）
+    6)由ActionProxy去读取struts.xml
+    7）读取到的struts.xml信息放到ConfigurationManager对象中
+    8)ActionProxy通过ConfigurationManager对象创建指定action的代理对象（想要执行的action的替身）
+    9）执行一系列的拦截器的前置方法a->b->c
+    10）执行action代理类中的指定的execute或其他方法
+    11)执行完方法后生成result，生成模板
+    12)执行一系列的拦截器的后置方法c->b->a
+    13)返回响应到客户端
+
+11、ActionSupport类中定义了几个常用的结果
+    success成功执行
+    error错误
+    input输入的数据转换出错
+
+12、自定义类型转换器
+    1)写一个类继承自StrutsTypeConverter
+    2)实现两个方法
+        convertToString
+        convertFromString
+    3)如果只是某个action中使用到这个转换器，则在与action同包的目录中，创建actionName-convertion.properties配置文件
+    4）action中a属性需要用到自己的转换器,   a=自定义的转换器类
+
+    1)继承自DefaultTypeConverter
+    2)实现convertValue方法
+    3)如果只是某个action中使用到这个转换器，则在与action同包的目录中，创建actionName-convertion.properties配置文件
+    4）action中a属性需要用到自己的转换器,   a=自定义的转换器类
+
+13、输入的数据有误的情况下（类型转换出错）
+    类型转换出错后，Struts会转到input的结果，此结果可以转发到原先输入数据的页面
+
+    在输入数据的页面上可以使用<s:fielderror fieldName="input的name值">标签把错误信息显示出来
+
+    使用此标签需要导入struts-tags标签库
+
+    如果没有定义错误提示信息，则使用struts默认的错误提示信息，可以自定义：
+    在Action类的所在包中，添加ActionName.properties
+    invalid.fieldvalue.属性名=错误提示信息
+
+14、数据验证
+    编写一个actionName-validation.xml的验证配置文件
+
+    <validators>
+        <field name="action中属性的名字或javabean.property">
+             <field-validator type="requiredstring">
+                   <param name="minLength"></param>
+             </field-validator>
+        </field>
+    </validators>
+
+    1）requiredstring
+    2)int
+    3)double
+    4)date
+    5)email
+    6)fieldexpression
+    7)regex   以^开头    以$结尾
+
+15、Struts拦截器
+    自定义拦截器
+    1)写一个类，继承自AbstractInterceptor类
+    2）实现public String intercept(ActionInvocation invocation) throws Exception方法
+    3）如果拦截器后需要执行action的方法，则直接调用invocation.invoke()方法
+    4）把invocation.invoke()方法调用的结果返回出来
+        详情请参考MyIntercepter类
+
+    如何让action（具体的某一个action，局部用法 ）使用自定义的拦截器
+    1)action的配置文件中package部分增加拦截器的声明
+        <interceptors>
+            <interceptor name="" class=""></interceptor>
+        </interceptors>
+    2)在action的result后面或前面添加拦截器的引用
+        <interceptor-ref name="1" />
+        <interceptor-ref name="2" />
+
+        拦截器的执行顺序按照引用出现的顺序
+
+    如何让所有的action都能使用到自定义的拦截器
+    1)提供一个公有的package
+        <package name="my-struts" extends="struts-default">
+
+        </package>
+    2)在此package内部增加拦截器的声明
+        <interceptors>
+                    <interceptor name="" class=""></interceptor>
+                </interceptors>
+    3）在action对应的配置文件中，直接让包继承自第1步中公有的package
+        在action的内部就可以直接使用第二步中定义好的拦截器
+
+    如果action中引用的拦截器只有自定义的拦截器，则struts提供的拦截器全部不起作用，所以
+    需要在拦截器的引用中单独引用defaultStack
+    <interceptor-ref name="defaultStack" />
+
+    如何自定义拦截器栈？
+    1)在公有的packages配置文件中，添加拦截器栈的声明
+        <interceptors>
+        			<interceptor name="MyIntercepter" class="com.gs.intercepter.MyIntercepter" />
+        			<interceptor name="MyIntercepter1" class="com.gs.intercepter.MyIntercepter1" />
+
+        			<!-- 自定义拦截器栈 -->
+        			<interceptor-stack name="my-stack">
+        				<interceptor-ref name="defaultStack" />
+        				<interceptor-ref name="MyIntercepter" />
+        			</interceptor-stack>
+
+        		</interceptors>
+
+     2)如何所有的action都想使用自定义的拦截器栈，则可以在公有的package配置文件中
+     <default-interceptor-ref name="my-stack" />  去引用自定义的拦截器栈
+
+
+     如果只有一部分方法需要被拦截，则可以继承自MethodFilterInterceptor抽象类
+     doInterceptor()方法
+     在配置文件引用 此拦截器的时候，可以通过includeMethods指定哪方法需要被 拦截
+     通过excludeMethod参数指定哪些方法不需要被 拦截
+     多个方法用逗号分割
+
+16、OGNL表达式语言
+    Struts2默认使用的表达式语言
+    Object Graph Navigation Language对象图导航语言
+
+    可以获取page, request, session, application中存储的对象
+    jstl标准标签库if, iterator, out
+
+    http://xmlns.jcp.org/xml/ns/javaee
+
+    struts-tags
+        数据标签库及流程控制标签库请参考ognl.jsp
+
+17、form表单标签库
+    <s:form action="" method="" theme="xhmtl|simple">
+
+    </s:form>
+    默认主题为xhtml，会自动加入一些样式
+    cssClass属性可以指定struts表单标签的样式
+
+    表单标签库可以自动完成数据回显，只要在action中给属性赋值了，转发到对应的form表单页面，则数据自动显示
+18、Java的国际化
+       Locale区域及语言类
+        Locale.getDefault();获取系统默认的区域语言
+
+        ResourceBundle国际化资源 文件类
+        getString()可从国际化资源中根据key获取配置的文本内容
+
+        baseName_zh_CN.properties, 此资源文件直接放在src根目录下
+
+        ResourceBundle.getBundle("baseName", locale);
+
+19、Struts的国际化
+    1）生成国际化资源文件
+        baseName_zh_CN.properties
+    2)所有的action都能访问的资源文件的baseName必须进行配置
+        struts.xml主配置文件中加入
+        <constant name="struts.custom.i18n.resources" value="message" />
+    3)如果action中要使用国际化功能，则此action必须继承自ActionSupport
+    4)在action中可以直接调用getText(String key); 获取资源内容
+
+    5）如果单个action访问的资源文件，则此资源文件的baseName与Action类名一致，并且
+    放入与action同一个级别的包中
+
+    6）页面中可以直接使用<s:text name="key" />去获取配置好的资源内容
+        如果使用struts form表单，则<s:textfield name="" key="resouce_key" />
+
+    7)如果想要在页面中切换语言的显示，则只需要把request_locale参数传递到页面
+    如localhost:8080/i18n/page?request_locale=zh_CN
+
+20、Struts文件上传
+    1)定义表单，写input type="file" name="name"
+    2)定义上传的action，此action中需要三个成员变量
+        private File name;
+        private String nameFileName;
+        private String nameContentType;
+        并提供setter方法
+    3）使用FileUtils.copyFile()方法把文件copy到目标文件
+
+21、struts文件下载
+    请直接参考DownloadAction类和struts-download.xml配置文件
+
+22、异常处理
+    全局results
+    通用的package
+    <global-results>
+        <result name="">/</result>
+    </global-results>
+
+    <global-exception-mappings>
+        <exception-mapping exception="java.lang.Exception" result="myerror"></exception-mapping>
+    </global-exception-mappings>
+
+23、struts返回json
+        1)导入一个包：struts-json-plugin.jar
+        2)此包提供了一个package,json-default继承自struts-default
+        3)自定义的包继承自json-default
+        4）json-default包中提供了一个result, json，此result 就是用于返回json数据的result

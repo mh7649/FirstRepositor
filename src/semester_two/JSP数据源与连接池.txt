@@ -1,0 +1,61 @@
+1、原始的写法所遇到的问题
+	1）、url和用户名，密码，驱动程序的类名称硬编码在Java类里。修改的成本比较大
+		解决方案：
+		把这部硬编码的内容提出来放在一个单独的文件中，此文件一般称之为配置文件
+		
+		driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+		url=jdbc:sqlserver://localhost:1433;DatabaseName=d_mall
+		username=sa
+		password=123456
+		
+	2）、每一个数据连接的建立的开销非常大，尽量减少建立的次数
+		连接池：一个包含有多个连接的池子
+		池子有最大连接数的限制，有最大空闲连接数的连接，每个空闲连接的最大等待时间
+		
+		每当有人访问，则创建一个连接，放入连接池，当第二个人来访问，则判断连接池中是否有空闲连接，如果有直接使用，
+		如果没有，则创建或等待连接。当连接用完后，不需要断开连接，而是把连接放回连接池
+		
+2、数据源
+	DataSource，所谓数据源就是数据的源头，数据的来源，DataSource可以为开发者提供数据连接
+	
+	指定数据连接所需要的驱动程序，url,用户名和密码
+	1）tomcat中所有的应用都能使用的数据源
+		tomcat的conf目录下的context.xml文件中的<Context>加入<Resource />的配置
+	
+	2）tomcat中某个项目单独使用自己的数据源
+		项目的WebContent目录下的META-INF目录下创建一个context.xml文件
+		xml文件的内容如下 ：
+	<Context>
+		<Resource 
+			name="jdbc/datasource" 资源的名称
+			type="javax.sql.DataSource"  资源的类型，获取到的资源是javax.sql.DataSource的类型
+			driverClassName=""   驱动程序的名称
+			url=""  连接数据库的url
+			username=""   连接数据库的名称
+			password=""   连接数据库的密码
+			maxActive="30"  最大活动连接数，如果给0，表示无限制 
+			maxIdle="5"   最大的空闲连接数，如果给0，表示无限制
+			maxWait="3000"   空闲连接的最大等待时间，ms为单位。如果给0，表示无限制
+		/>
+	</Context>
+	
+3、JNDI Java Naming And Directory Interface  java命名和目录服务接口
+	使用jndi通过一个字符串来查找指定的资源 	
+	对于数据源来说，<Resource name="">通过此name就可以找到资源
+	type=""指定了资源的类型
+	
+	InitialContext context = new InitialContext(); // 初始化jndi上下文
+	Object obj = context.lookup("java:comp/env/资源的名称"); // 通过资源的名称获取资源 
+	javax.sql.DataSource ds = (DataSource) obj;
+	
+	java.sql.Connection conn = ds.getConnection(); // 先去判断连接池是否有空闲连接，
+		如果没有空闲连接，并且没有超过最大连接数则创建连接，如果超过最大连接数，则等待
+		如果有空闲连接，则直接使用
+	
+	// 使用连接
+	
+	conn.close(); // 关闭连接，不是真正地把连接断开，而是把连接放回到连接池
+	
+4、原始的conn.close()是真的把连接断开
+	数据源与连接池的conn.close()而把连接放回到连接池
+		

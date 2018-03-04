@@ -1,0 +1,286 @@
+1、什么是类？什么是对象？
+	什么是类：具有相同属性和行为的一类事物   class来表示一个类		比如人类是类
+	什么是对象：具有相同属性和行为的一类事件的具体的一个		比如人类中的一个人是对象
+	对象是类的具体化，类是抽象的
+	
+	一切皆对象
+
+2、面向过程与面向对象编程·
+	面向过程：自上而下，逐步求精
+	程序 = 数据+算法
+	直接在方法里调用其他定义好的方法
+
+	面向对象编程就是把所有使用到的数据当作对象来看待
+	程序 = 对象（属性+行为）+消息
+	通过对象来调用其具有的方法
+	
+3、类的定义，对象的使用
+	public class Person {
+		// 属性区域
+		String a;
+		int b;
+		float c;
+		
+		// 方法区域
+		void read() {
+		}
+	}
+	
+	如果要使用这个类，则必须先创建这个类的具体的对象，创建的过程称为实例化（对象是类的一个实例instance）
+	使用new关键字进行实例化
+	Person person = new Person(); // 实例化一个Person对象（创建一个Person类的实例，创建一个Person类的对象）
+	person.read(); // 调用person对象的read();方法
+	Person person1 = new Person();
+	person1.read(); // 调用person1对象的read();方法
+	
+4、成员变量与局部变量
+	public class Person {
+		// 成员变量
+		成员变量如果没有初始化值，则byte, int, long, short默认为0, float默认为0.0f， 
+		double默认为0.0， char默认为空字符， String默认为null(空引用)， boolean默认为false
+		
+		void play() { // 成员方法
+			// 局部变量  一定要初始化
+		}
+	}
+	
+	成员变量：实例变量+静态变量（类变量）
+	静态变量是指在变量类型前增加static关键字修饰的变量，静态变量是同一个类的所有实例都共享的变量
+		*******1)直接用类来引用
+		2）也可以用对象来引用（出现警告，最好不要这么用）
+		3）可以直接在实例方法中引用
+	实例变量没有使用static关键字的变量
+		只能通过对象来引用一个实例变量
+		静态方法中不能直接引用实例变量
+	
+	
+5、常量
+	final int COUNT = 10;
+	final double PI = 3.141592654;
+	常量必须进行初始化
+	
+6、基本数据类型与引用数据类型的区别
+	基本数据类型（不是class，没有属性和方法）
+	基本数据类型的包装类
+	byte java.lang.Byte
+	char java.lang.Character
+	short java.lang.Short
+	int java.lang.Integer
+		intValue(), shortValue(), longValue(), floatValue(), doubleValue(), byteValue()
+		toString();//转成字符串的方法
+		详见com.gs.IntegerTest
+	long java.lang.Long
+	float java.lang.Float
+	double java.lang.Double
+	boolean java.lang.Boolean
+	
+	引用类型：（class，或者数组）除基本数据类型外的都是引用类型
+	char[] a = {'a', 'b', 'c'};
+	
+7、堆和栈
+	在java里，内容空间可以分为堆区和栈区
+	栈区用来存储局部变量的值，堆区用来存储引用类型变量的值
+	public static void main(String[] args) {
+		int a = 10; // 栈区
+		Data d = new Data(); // d这个变量在哪？栈区， d变量的值在堆区。由栈区里的d引用堆区里d的值
+		d.a = 100;
+	}
+	
+	Data d = new Data();
+	Data d1 = new Data();
+	对于 d和d1来说在堆区有不同的存储空间来存储，d和d1是不同的对象
+	Data d = new Data();
+	Data d1 = d; //  把d引用的值直接赋值给d1
+	对于 d 和d1来说在堆区是相同的存储空间，d和d1是同一个对象
+	
+	总结：类的对象指向同一个堆区域，则这些对象是同一个对象
+	
+8、对象的比较
+	1)两个对象指向相同的堆空间，则为同一个对象
+	2）两个对象哪怕指向不同的堆空间，但是根据对象中的某些值进行比较，
+		如果值是一样的，则认为是同一个对象
+		
+		equals方法，本身是对对象的地址进行比较的，与==一样
+		
+		public boolean euqals(Object obj) {
+			return false;
+		}
+
+9、this关键字
+	public class Test { 
+		void test() { 
+			this // 表示本类的一个对象
+		}
+	}
+	
+	Test t = new Test();
+	t.test(); // t调用了test方法，则t就是test方法里面的this this->t
+	Test t1 = new Test();
+	t1.test(); // this->t1
+	
+	在方法定义中，使用this来引用本类对象的属性，可以区分属性和参数（开发习惯：参数名与属性名一致）
+	
+10、java.lang.Object类
+	java.lang.Object类是所有类的父类，JDK提供的，直接可以调用
+	Object类的一些常见方法：
+	equals(Object obj);
+	hashCode();
+	notify();
+	wati();
+	notifyAll();
+	clone();
+	toString();
+	getClass();
+	finalize();
+	
+	由Object类本身就有的equals(Object obj) // 对对象的地址进行比较的方法
+	详见Computer.java类
+	
+	String字符串类也有equals方法，并且这个equals已经被重新实现了，比较的是字符串的值
+	
+11、instanceof关键字
+	用来判断某个对象是否某个类的实例
+
+12、构造方法与成员方法
+	构造方法是使用new关键字创建对象时所调用的方法，主要的作用是初始化本类对象的属性值
+	构造方法的名称与类名称一致，并且不能有返回值。可以传递初始化的参数给构造方法
+	public class Test {
+		public Test() { // 无参构造方法，如果一个类没有写任何构造方法，则jdk会默认生成一个无参构造方法
+		}
+		
+		public Test(int a) { // 构造方法可以有多个，使用的是同一个与类名称一致的名称，但是需要不同的形参列表
+		
+		}
+	}
+	
+	如果开发者写了其他的构造方法，则此时jdk不会默认提供无参构造方法
+	
+	除构造方法外的都是成员方法
+	成员方法：实例方法 + 静态方法（类方法）
+	
+	静态方法是指在返回值类型前增加static关键字
+		1）在静态方法直接调用，不需要用对象来调用
+		2）也可以使用对象来调用静态方法（最好不用，会有警告）
+		******3）使用类来调用    
+		******4）直接在实例方法中调用静态方法
+	实例方法没有用static关键字
+		1)必须用对象来调用
+		2)不能直接在静态方法中调用
+		
+		总结：实例方法可以调用静态变量和静态方法
+					静态方法不可以调用实例变量和实例方法
+
+13、方法的重载
+	如果方法名称一致，但是形参列表不一样，则叫方法的重载。并且方法重载与返回值类型无关
+	形参不一样的情况：
+		个数不一样：
+			test(), test(int a), test(int a, int b)
+		个数一样，但是类型顺序不一样
+		test(int a, float b), test(float b, int a)
+		
+		test(int a, int b) test(int b, int a)这种不是方法的重载
+		
+		jdk如何来区分调用的是哪个方法：根据参数列表的个数，类型的顺序来匹配调用哪个方法
+		int test(int a, int b);
+		int test(float a, int b);
+		int test(String a, int b);
+		
+		test(10, 10);
+		test(10.f, 10)
+		test("abc", 10);
+
+14、包的使用
+	package:本质上就是一个目录，把java源代码分成不同的类别，放到不同的目录下
+	包是指用来存放Java源代码的一个目录
+	
+	包的命名规则：
+		公司所对应的网站域名
+		www.oracle.com  com.oralce为前缀
+		www.java.com  com.java为前缀
+		www.abc.com  com.abc为前缀
+		www.abcd.cn  cn.abcd为前缀
+		
+		公司的产品名称
+		qq  qq为前缀
+		weibo weibo为前缀
+	
+	包的创建：src点击右键->New->Package->输入包名称
+	
+	package com.gs; // 此java源代码处在哪个包下, package必须放在第一行
+
+	public class PackageTest {
+		// 此时的class PackageTest有一个类的全限定名：com.gs.PackageTest(包名+类名)
+	}
+	
+	类的简单名称：PackageTest
+	类的全限定名称：com.gs.PackageTest
+	
+	java.lang包是JDK的核心包，JDK的核心API都在这个包下，所有Java类都可以直接使用包下的类：
+	基本数据类型的包装类，
+	Object
+	String
+	System
+	Math
+	
+
+15、面向对象的三大特性
+
+16、如何查看JDK提供库文件的源代码：
+	把光标定位到需要查看源代码的Class名称上，点击F3(Fn+F3)
+	如果没有导入源代码，则需要附加源代码 Attach Source->External Location->External File->jdk->src.zip
+	
+	打开源代码后可以点击Outline框架视图查看类的属性和方法的定义
+	
+17、如果项目上有红色的叉，红色的感叹号：缺少库文件
+	构建路径：Build Path，告诉项目用到哪些库文件
+	项目上点击右键->Build Path>Configure Build Path(配置构建路径)->Libraries->Add Libraries->双击JRE System Library->Finish
+
+18、toString方法
+	Object类不仅仅有默认的equals方法，还有一个toString()方法
+	
+	toString是所有类都默认有的一个方法。默认实现是输出类的全限定名+@+对象的哈希码：com.gs.exercie.User1@15db9742
+	toString通常需要被重新实现以用来输出类的属性信息
+	
+	假设User类的toString方法已经重新实现为输出User类的基本信息
+	在System.out.println(u.toString());  // 表示输出u对象的基本信息
+	System.out.println(u); // ==>  System.out.println(u.toString())
+
+补充：
+	形参（形式参数），方法的声明里
+	void test1(int x, int y) {
+		y = 30;
+		int c = x + y;
+	}
+	
+	void test2(int c, String d) {
+	
+	}
+	
+	void test3(int a, float b, double c, String d, Phone p) {
+	
+	}
+	
+	void ATM(Card card, String password) {
+	 	// 完成取钱的功能
+	}
+	实参（实际参数）
+	
+	main(String[] args) {
+		int a = 10;
+		int b = 20;
+		obj.test1(a, b); // 实参 10传递给test1方法里的局部变量a，20传递给test1方法的局部变量b
+		String str = "abc";
+		obj.test2(a, str);
+		float f = 10.f;
+		double dd = 10.8;
+		Phone p = new Phone();
+		obj.test3(a, f, dd, str, p);
+		Card c = new Card();
+		obj.ATM(c, "123456");
+	}
+	
+	形参的名称与实参的名称没有关系，只跟数据类型和顺序（个数）有关。用形参接收实参的值
+	
+类的重命名
+alt+shift+r  ==> 文件上右键->Refactor->Rename
+ 

@@ -1,0 +1,66 @@
+1、进程Process
+	任何一个应用程序都对应一个进程
+	
+2、线程
+	一个进程可以拥有多个线程，至少有一个线程，主线程
+	
+	public static void main(String... args) {
+		//	主线程
+	}
+	
+	资源的管理：
+	进程拥有资源，线程使用资源。
+	一个进程的资源可以被此进程内的多个线程使用
+	
+	非线程安全：资源的争抢，资源的争抢会造成资源的破坏
+	线程安全：不会出现资源的争抢，让线程按一定的顺序来使用资源，a线程执行完后让b线程用。
+	线程的同步：一个线程抢到一个资源后，对该资源进行保护，不被其他线程抢走。用完之后再把此资源释放，释放后就能被
+	其他线程争抢
+	
+3、java.lang.Thread线程类
+		sleep(long ms); //静态方法，休眠指定的ms数 
+		
+4、定义自己的线程类
+	第一种方式：
+	1）写一个类继承自Thread类
+	2)重写public void run() {
+		// 线程所要做的事情
+	}
+	3)Thread t = new MyThread();
+	t.start();
+	
+	第二种方式：
+	1）写一个类，实现Runnable接口
+	2)重写public void run() {
+		// 线程需要做的事情
+	}
+	3) Thread t = new Thread(new MyThread());
+	t.start();
+	
+	用哪一种？
+		推荐使用第二种形式，支持自定义的线程类继承其他类，可以使用匿名内部类创建线程
+		
+5、生命周期（lifecycle）
+	一个线程的创建到线程的消亡的过程
+	新建->就绪（调用start后线程进入就绪状态）->运行（自动调用run方法  ）->阻塞（当Thread.sleep（））->就绪（interrupt()）
+	 																																 ->等待（wait()）->就绪（notify(), notifyAll()）	
+	当run方法执行完毕，则线程消亡
+	请参考书籍325页图
+	
+6、常用的方法	
+	setName(String) 设置线程名称
+	getName()获取线程的名称
+	setPriority(int) 设置线程的优先级
+	getPriority()获取线程的优先级
+	
+	start()启动线程，让线程进入到就绪状态，此时一旦线程获取到了cpu时间，线程进入运行状态
+	
+	interrupt(); 让正在休眠的线程调用此方法，则可让此线程唤醒
+	setDaemon(boolean)设置守候线程，true表示是，false表示不是，默认为false
+	
+	
+	静态方法：
+	Thread.sleep(long)休眠指定毫秒数
+	Thread.currentThread()获取当前正在运行的线程
+	Thread.yield()在线程内部去调用，把时间分配给其他线程
+	

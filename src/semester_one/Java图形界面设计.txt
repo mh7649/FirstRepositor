@@ -1,0 +1,205 @@
+1、GUI
+	Graphics User Interface      图形用户界面（电脑客户端软件）
+	
+	UI
+	User Interface(用户界面)   电脑，手机，网页
+	
+	UE
+	User Experience（用户体验）     电脑，手机，网页，游戏让用户用起来感觉怎么样
+	
+2、AWT   Abstract Window Toolkit（重量级组件）
+	抽象窗口工具包，JDK为开发者提供的一系列图形设计的类和接口
+	如何使用这些类与接口来创建完成相应功能的界面
+	
+	优点1、AWT提供用于创建生动而高效的GUI的各种组件。
+	优点2、GUI以通过键盘或鼠标来响应用户的操作
+	
+	发展：
+		Java1.1 加入了事件模型（事件监听器，事件对象）
+			事件：A在监听B的动作，如果B做了某个动作，则A采取相应的处理
+						A相当于事件监听器，B的动作就是事件对象
+		Java2  1）创建了新标准JFC(java基础类库)
+     			  2）创建轻量级组建包swing
+     			  
+ 3、轻量级与重量级
+ 	轻量级功能相对简单，使用也更简单，占用的系统资源更少，依赖的其他库文件更少
+ 	重量级与轻量级相反
+ 	
+ 4、AWT的组成
+ 	1）组件（Component）
+ 		Button按钮，Label标签，TextFiled文本输入框，ComboBox下拉菜单，Menu菜单，Icon图标
+ 		Image图片（BufferedImage缓冲图片）
+ 		
+ 	2）容器（本质上也是一个组件）
+ 		Window窗口，Panel面板，Dialog对话框，Frame框架
+ 		把各种组件组织在一起
+ 		
+ 	3）布局管理器
+ 		用来管理AWT各种组件如何放置在AWT的容器中
+ 		
+ 5、AWT的基本结构 
+ 	java.awt包（包含用于创建用户界面和绘制图形图像的所有类）
+ 	
+ 	组件的基本结构：
+ 		java.awt.Component(所有组件类的父类)
+ 				java.awt.Button按钮
+ 				java.awt.Canvas画布，可在此画布上绘制图形
+ 				java.awt.Checkbox复选框
+ 				java.awt.Choice单选框
+ 				java.awt.Container容器类
+ 						java.awt.Window窗口（Window 对象是一个没有边界和菜单栏的顶层窗口）
+ 								java.awt.Dialog对话框
+ 								java.awt.Frame框架（Frame 是带有标题和边框的顶层窗口）
+ 						java.awt.Panel面板
+ 						java.awt.ScrollPane滚动面板
+ 				java.awt.Label标签，显示文本的组件
+ 				java.awt.List列表，类似于HTML中多选下拉菜单
+ 				java.awt.Scrollbar滚动条
+ 				java.awt.TextComponent文本输入组件
+ 						java.awt.TextField单行文本输入区域
+ 						java.awt.TextArea多行文本输入区域
+ 						
+		java.awt.Component类的方法
+			setName(String)设置组件的名称
+			String getName()获取组件的名称
+			setSize(int width, int height)设置组件的大小
+			setSize(Dimension d)  Dimension实际是包含有width和height的一个类
+			Dimension getSize();如果要获取宽则使用Dimension类的实例的width属性
+			
+			paint(Graphics);绘制图形，完成组件的绘制操作。一个组件想要出现在屏幕上，则必须调用此组件的paint方法
+ 			repaint();重绘
+ 			update();组件的更新
+ 			setVisible(boolean b);设置组件的可见性，true表示可见，false表示不可见
+ 			boolean isVisible();判断组件是否可见
+ 			Color getForeground();获取组件的前景色
+ 			setForeground(Color);设置组件的前景色
+ 			Color getBackground();获取组件的背景色
+ 			setBackground(Color);设置组件的背景色	
+ 			
+ 			setLocation(int, int);设置组件的左上角的x与y坐标      // setSize(int width, int height) + setLocation(int x, int y) ===> setBounds(Rectangle)
+ 			setLocation(Point);
+ 			Point getLocation();获取组件的左上角的x与y坐标
+ 			
+ 			setBounds(Rectangle);设置边界，边界包含有一个组件的宽和高，还包含有组件左上角的x和y坐标
+ 			Rectangle getBounds();	获取边界
+ 			
+ 			setFont(Font);设置组件显示的文字的字体
+ 			Font getFont();获取组件显示的文字的字体
+ 			
+ 6、java.awt.Color此类用于表示各种颜色
+ 		Color.WHITE白色
+ 		Color.BLACK黑色
+ 		Color.GREEN绿色	
+ 		
+7、java.awt.Rectangle表示一个矩形的类
+		包含有矩形的左上角的x坐标，y坐标，矩形宽和高
+		
+8、java.awt.Font类，用于表示字体的类
+
+9、java.awt.Point类，表示包含有x与y坐标的一个点
+
+10、java.awt.Frame（Frame 是带有标题和边框的顶层窗口）
+	如何创建窗口？
+	1)创建自己的窗口类，继承自Frame类
+	2）setSize, setTitle , setLocation, setVisible
+	
+	Panel面板
+	
+	
+11、事件监听机制
+	1）事件源对象：哪个对象发生了某个事件
+	2）事件：在某个对象上发生的一件事情
+	3）事件监听器：去发现某个事件源对象上是否发生了某个事件
+	
+		a、WindowListener，专门监听窗口的一些事件，如打开窗口，关闭窗口，激活窗口
+			如果只想实现接口里的某几个方法，使用WindowAdapter适配器类
+		
+		FirstFrame2与MyWindowListener1这两个类，把界面的显示和界面的处理分离开来（MVC设计模式的基础）
+ 						
+ 12、布局管理器
+ 	java.awt.LayoutManager接口
+ 			java.awt.FlowLayout实现类，表示流式布局，组件从左往右依次排布（从窗口的中间开始），如果一行占满了，则到下一行
+ 			java.awt.BorderLayout实现类，表示边框布局，把整个窗口分成5个部分，NORTH， SOUTH, WEST, EAST, CENTER
+ 			java.awt.GridLayout实现类，表示网格布局，类似于Table，包含有行与列
+ 			java.awt.CardLayout实现类，表示卡片布局，后添加的被覆盖
+ 			
+ 			null空布局，绝对布局，需要指定组件的x, y坐标
+ 			
+ 			java.awt.GridBagLayout实现类
+ 			
+ 	1）如果没有给窗口设置任何布局，则每次添加的组件会把上一次添加的组件覆盖，并且组件占满窗口的可见区域
+ 	2）FlowLayout流式布局，可参考FlowLayoutTest类
+ 	3）BorderLayout边框布局，
+ 	
+ 13、事件监听
+ 	使用一个监听器用来监听某个事件是否发生在某个事件源上
+ 	
+ 	低级事件
+ 		java.awt.event.ComponentEvent(组件事件：组件尺寸的变化，移动)    java.awt.event.ComponentListener, java.awt.event.ComponentAdapter
+			componentResized(ComponentEvent e)
+			componentMoved(ComponentEvent e)
+			componentShown(ComponentEvent e)
+			componentHidden(ComponentEvent e)
+		java.awt.event.ContainerEvent（容器事件：组件增加，移动）     java.awt.event.ContainerListener, java.awt.event.ContainerAdapter
+			componentAdded(ContainerEvent e); 添加一个组件到容器
+			componentRemoved(ContainerEvent e); 从容器中移除一个组件
+		java.awt.event.WindowEvent（窗口事件：关闭窗口，图标化）   java.awt.event.WindowListener, java.awt.event.WindowAdapter
+			参考前面的笔记和代码
+		java.awt.event.FocusEvent（焦点事件：焦点的获得和丢失）   java.awt.event.FocusListener, java.awt.event.FocusAdapter
+			focusGained(FocusEvent e); 获得焦点
+			focusLost(FocusEvent e); 失去焦点
+		java.awt.event.KeyEvent（键盘事件：键按下、释放）   java.awt.event.KeyListener, java.awt.event.KeyAdapter
+			keyTyped(KeyEvent e); 针对某些键才起作用，如英文字符，数字，esc。辅助性的按钮不会监听typed事件，比如大写锁定键，回车键，Ctrl,Alt, Fn
+			keyPressed(KeyEvent e); 按了一个键
+			keyReleased(KeyEvent e); 松开一个按键
+		java.awt.event.MouseEvent（鼠标事件：鼠标单击，移动）   java.awt.event.MouseListener, java.awt.event.MouseAdapter
+			mouseClicked(MouseEvent e); 按下+松开
+			mousePressed(MouseEvent e);  鼠标按下去
+			mouseReleased(MouseEvent e); 松开
+			mouseEntered(MouseEvent e); 进入到区域
+			mouseExited(MouseEvent e); 从区域中离开
+		java.awt.event.MouseEvent(鼠标的拖动等状态)      java.awt.event.MouseMotionListener   java.awt.event.MouseMotionAdapter
+			void mouseDragged(MouseEvent e); 鼠标拖动（需要按住某个键）
+			void mouseMoved(MouseEvent e); 鼠标移动（不需要按住某个键，直接移动鼠标）
+			
+		对于所有的低级事件，都提供了适配器类
+ 	
+ 	高级事件
+ 		java.awt.event.ActionEvent（动作事件：按钮按下）  java.awt.event.ActionListener
+ 			void actionPerformed(ActionEvent e) 按钮的按下
+		java.awt.event.AdjustmentEvent（调节事件：调节滚动条上数值） java.awt.event.AdjustmentListener
+			void adjustmentValueChanged(AdjustmentEvent e); 监听值的变化
+		java.awt.event.ItemEvent（项目事件：修改下拉列表中的选项）  java.awt.event.ItemListener
+			void itemStateChanged(ItemEvent e); 监听状态的改变，选中状态，非选中状态
+		java.awt.event.TextEvent（文本事件：文本对象改变）   java.awt.event.TextListener
+			void textValueChanged(TextEvent e); 监听文本值 的变化
+			
+14、图形图像的绘制
+			任何一个组件都有一个void paint(Graphics g)，负责把组件绘制出来，在paint方法的内部，可以调用super.paint(g);来调用父类的paint方法，
+				Graphics就是画笔对象，负责把像素点画出来
+				
+				Graphics类的常用方法
+					drawLine(int x1, int y1, int x2, int y2) // 绘制直线，起点的x,y，终点的x,y坐标
+					drawRect(int x, int y, int width, int height); // 绘制矩形，左上角的x,y坐标，宽和高
+					drawString(String str,  int x, int y); // 在指定的x,y坐标绘制字符串
+					draw3DRect(int x, int y, int width, int height, boolean raised); // 绘制增加有一个像素的阴影的矩形, raised表示在边框外部或内部增加一个像素
+					drawArc(int x, int y, int width, int height, int startAngle, int endAngle); // 以指定矩形的中心点来绘制弧 
+					所有方法详见com.gs.graphics.GraphicsFrameTest.java
+					
+		
+		void repaint()，如果组件有更新，则组件需要重新绘制.
+			一旦开发者显式地调用了repaint方法，则repaint会自动调用update方法
+		
+		void update(Graphics g)，如果一个组件的外观需要变化，则应该使用此方法对组件进行更新
+					
+15、Toolkit工具包类
+			Toolkit.getDefaultToolkit();获取默认的工具包类
+			Image img =	getImage(String fileName)， 通过图片的名称来获取一个图片对象
+			
+			getScreenResolution( )获取屏幕的分辨率
+			getScreenSize( ); 获取屏幕的尺寸
+			
+			BufferedImage img = ImageIO.read(new File("图片的路径"));
+		
+			g.drawImage(img, x, y, null);
+					

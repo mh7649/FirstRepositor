@@ -1,0 +1,192 @@
+1、JSP是什么
+	Java Server Pages  Java服务端页面    （为了动态地生成HTML页面）
+	
+	PHP Personal Home Pages(个人主页) 新名称：PHP: Hypertext Preprocessor   （动态生成HTML）
+	
+	ASP Active Server Pages(动态服务端页面， 动态生成HTML)-----》ASPX(基于微软的.Net框架，应用于微软的桌面级应用程序开发，网站开发)
+	
+	JSP的好处：
+	1）动态生成页面
+	2）性能高
+	3）安全
+	4）跨平台
+	5）健壮性高
+	6）易于维护
+	7）支持标签
+	
+2、环境
+	开发环境：
+		1）JDK
+		2)IDE (IntellijIdea, Eclipse, NetBeans)
+		3)WEB容器
+			用于保存和运行jsp，html,css,js, images的一个服务器
+			通过使用浏览器输入url地址的形式去访问服务器上的指定页面或者资源 
+			url：http://www.baidu.com/index.jsp
+				https://www.baidu.com/index.jsp
+			url:http://ip:port/index.jsp
+			
+			JSP：Tomcat(Apache组织，用得最多的，最简单的一个web窗口容器，开源的，免费的)， 
+				JBoss(JBoss公司，商业化WEB容器)
+				WebLogic，WebSphere(IBM公司，商业的WEB容器)， Resin(开源的WEB容器)
+			PHP: Apache httpd
+			ASP(X)： IIS
+				
+			
+	
+	运行环境：
+		1）JRE
+		2)tomcat
+		3)网站项目
+	
+3、http/https协议
+	Hyper Text Transfer Protocal
+	https安全的超文本协议，对数据进行加密
+	
+	http是基于TCP/IP协议的
+	
+4、安装tomcat
+	1)下载tomcat   tomcat.apache.org
+	2)下载的zip文件，解压到d:
+		d:\apache-tomcat-8.5.11
+		重要的文件夹：
+			bin目录:tomcat提供命令   .exe可执行文件  .bat结尾的批处理文件（dos命令的集合） .sh（Linux系统使用批处理脚本文件）
+				version.bat在dos命令下可以执行，并且输出tomcat和jdk的版本号
+				startup.bat启动tomcat
+				shutdown.bat关闭tomcat
+			webapps目录：用来存储不同的网站项目
+			tomcat的配置文件的目录：conf目录
+				server.xml
+					<Connector port="8080" protocol="HTTP/1.1"
+		               connectionTimeout="20000"
+		               redirectPort="8443" />在8080端口号上监听http协议
+		            <Host name="localhost"  appBase="webapps"
+            			unpackWARs="true" autoDeploy="true"> web容器的所有网站项目的根路径webapps
+				web.xml
+					<welcome-file-list>
+				        <welcome-file>index.html</welcome-file>
+				        <welcome-file>index.htm</welcome-file>
+				        <welcome-file>index.jsp</welcome-file>
+				    </welcome-file-list>   所有网站的欢迎页设置
+			logs:tomcat的日志记录
+				****catalina-日期.log   记录tomcat的错误信息
+				localhost-日期.log  记录servlet及相关对象的生命周期
+				localhost-access-log-日期.txt 用来记录什么时候哪个客户端以哪种方式请求了服务器，并且记录服务器的返回状态码
+			work:jsp页面所生成的java及class文件的存储位置
+	3）测试是否成功安装并启动
+		打开浏览器，输入localhost:8080或者127.0.0.1:8080
+		如果正常显示出tomcat的页面，则表示成功安装并启动
+		如果看不到任何页面，或者浏览器提示无法访问此网站，则表示没有成功安装并启动或者在关闭状态
+		
+5、手动自定义一个网站项目
+	1）创建一个目录a
+	2)在a目录中创建一个WEB-INF目录
+	3）在WEB-INF目录中创建web.xml文件，文件内容如下 
+			<?xml version="1.0" encoding="UTF-8"?>
+			<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+			  <!-- 网站名称-->
+			  <display-name>myapp</display-name>
+			  <!-- 欢迎文件列表
+			  	在没有指定访问哪个 页面的前提下，默认访问的页面
+			   -->
+			  <welcome-file-list>
+				<welcome-file>index.html</welcome-file>
+				<welcome-file>index.jsp</welcome-file>
+				<welcome-file>index.htm</welcome-file>
+			  </welcome-file-list>
+			  
+			</web-app>
+	4）回到目录a
+	5）在目录a中创建一个html文件
+	6）把整个目录a拷贝到tomcat目录下的webapps目录下
+	7）打开tomcat目录的conf目录
+	8）打开server.xml文件
+	9）找到server.xml文件中的<Host>标签
+	10）在此标签下增加一个<Context>标签，标签内容如下 ：
+		<Context path="/myapp" docBase="myapp" debug="1" reloadable="true"></Context>
+		path:url访问路径
+		docBase:选择WEB容器从哪里去找到网站的资源
+		debug:是否支持调试功能，0不支持，1支持
+		reloadable:是否支持自动重新加载:true, false
+	11)测试：localhost:8080/第10步中配置的path
+	
+6、手动创建JSP页面
+	1）新建文本文档，后缀名.jsp
+	2)jsp第一行：
+		<%@page language="java" contentType="text/html;charset=utf-8" pageEncoding="utf-8" %>
+	3)如果不嵌入 java代码，其他的内容与html内容完全一致
+	
+7、使用集成开发工具进行web项目的开发与部署
+	部署：把一个项目放入到web容器中进行相应的配置并跑起来
+	
+	1）进行tomcat与eclipse的集成
+		Window->Preferences->左侧的菜单中的Server(服务器)->Runtime Environments->
+		右侧的Add...->选择Apache Tomcat的版本号（Tomcat 8.5）->指定Tomcat Installation Directory（Browser）
+		->选择到Tomcat的根据路径->OK->Finish
+		
+	2)使用eclipse创建动态网站项目
+		File->Project->Web->Dynamic Web Project
+		->输入项目的名称(Target runtime)-Next->Next->Context Root(上下文路径，访问路径)，WebContent
+		勾选上Generate web.xml   ->Finish
+		
+	3)项目结构
+		WebContent目录用于存储网站的各种资源 文件，如css, html, jsp, js, images
+		展开Java Resources->src(用于存储Java代码)
+		
+		Libraries，整个项目依赖于哪些jar包
+		
+8、jsp文件的解析与执行
+	1）把jsp项目部署至tomcat中，从浏览器发送请求浏览相应的网页
+		tomcat:
+		a、jsp页面通过jsp解析器把jsp代码转化成对应的java代码 a.jsp ---->a_jsp.java, test.jsp ---->test_jsp.java
+			在_jspService方法中，把jsp中的html代码通过输出流输出到客户端浏览器，把java代码移入到此方法中
+		b、由java编译器把java代码编译成对应的.class字节码文件
+		c、由解释器对.class字节码文件进行解释执行
+		
+		什么时机把jsp转化成对应的java代码并编译
+			第一次请求jsp页面时完成此操作。如果jsp页面没有修改过，则从第二次请求开始，不会再执行此操作。
+			如果jsp页面有修改，则重新执行此操作
+			
+9、从浏览器输入一个url地址并且回车，从浏览器发送一个请求到远程服务器
+	协议://ip地址:端口号/资源文件
+	协议：http,https
+	域名：ip:port     网站服务器的默认端口号为80，tomcat服务默认为8080
+	资源文件：网站项目里的jsp，html, css, js, images
+	
+	请求方法：
+		GET请求
+			直接从url地址栏输入url并回车， 直接点击a标签，get请求
+			
+			查询字符串(把参数及参数的值提交到web服务器)：?param1=value1&param2=value2&....
+			
+		POST请求
+			表单提交通常使用POST请求
+			
+		
+		<form></form>  表单默认使用get请求，把input, select, radio, checkbox的值以查询字符串的方式提交至服务器
+		<form method="get"></form>
+		<form method="post"></form>
+			
+	get与post请求的区别：
+	 1）get请求会使用到查询字符串，数据不安全，提交的数据有大小限制，一般是4K，不同的浏览器有不同的限制	
+	 2)post请求不会使用查询字符串，而是把数据放在请求体部分，数据更安全，提交的数据没有大小的限制
+	 
+10、请求与响应
+	从浏览器去获取到服务器上的资源----请求 request
+	
+	http请求：请求头（Request Headers）+请求体
+		请求头：Accept接受什么类型的内容, Cookie, User-Agent客户端浏览器
+		请求体：Requested URL请求的url, Status Code状态码，Request Method请求方法	
+	从服务器返回数据到浏览器-----响应 response
+		http响应：响应头（Response Headers） + 响应体
+			响应头：Content-Length响应内容的长度，Content-type响应内容的类型，Date响应时间
+			响应体：响应的内容
+	
+11、HTTP状态码
+	200：响应成功
+	404:请求的资源不存在
+	
+补充：
+	1、修改jsp的模板
+		window->perferences->输入template进行搜索->web ->jsp->Templates--->New JSP File->Editor
+	
+	

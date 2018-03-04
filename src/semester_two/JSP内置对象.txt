@@ -1,0 +1,119 @@
+1、什么是内置对象
+	jsp页面的Java程序片断中无需声明就能直接使用的对象，内置对象的名称是固定的
+	
+2、9大内置对象
+	1）out 输出流   javax.servlet.jsp.JspWriter
+		*out.write(int|char|String)
+		*out.print(String)
+		*out.println(String);
+		out.getBufferSize();// 返回页面的缓冲大小
+	2）request  请求对象   javax.servlet.http.HttpServletRequest
+		**String getParameter("name");获取请求参数
+			对于传递单个值到服务端的html元素，此方法有效
+			对于传递多个值到服务端的html元素，如多选的Select和checkbox，此方法无效，应该使用getParameterValues()
+		**String[] getParameterValues("select的name或checkbox的值");获取多个值 
+		String getContextPath();获取上下文路径
+		*getRequestDispatcher("/register.jsp").forward(request, response);转发
+		
+		*setAttribute(String key, Object value); // 在request中设置一个属性
+		*getAttribute(String key); // 从reuqest中获取指定的属性
+		*removeAttribute(String key);// 移除指定的属性
+			设置在request中的属性只能在当前请求中可用，出了当前请求，此属性没用
+			
+		setCharacterEncoding(); 设置编码
+		getMethod(); 获取请求方法
+		
+	3）response 响应对象  javax.servlet.http.HttpServletResponse
+		setCharacterEncoding(); 设置编码
+		sendRedirect("reg.jsp"); 重定向
+		setContentType("text/html;charset=utf-8"); 设置响应类型
+		getContentType(); 获取响应内容的类型
+		setContentLength(); 设置响应内容的长度，不要用
+		
+		PrintWriter getWriter(); // 获取PrintWriter输出流对象， 此对象输出的内容在out对象输出的内容的前面
+		OutputStream getOutputStream(); // 获取字节输出流，一般用于文件下载
+		
+		sendError(int statusCode); // 发送状态码，哪怕是200和302，页面的内容也不会正常显示 
+		setStatus(int statusCode); // 设置状态码
+		
+		addCookie(Cookie cookie); // 把cookie保存到客户端浏览器
+		
+		String encodeURL("url"); 会把session id放入到url部分
+		
+		response内定义了很多状态码:
+			public static final int SC_OK = 200; 正常访问
+			public static final int SC_ACCEPTED = 202; 请求被 正常接收 并处理中
+			public static final int SC_MOVED_TEMPORARILY = 302; 重定向
+			public static final int SC_NOT_MODIFIED = 304; 请求的资源没有更新过
+			public static final int SC_BAD_REQUEST = 400; 错误的请求
+			public static final int SC_UNAUTHORIZED = 401; 未授权的请求
+			public static final int SC_FORBIDDEN = 403;  请求被拒绝
+			public static final int SC_NOT_FOUND = 404;  资源未找到
+			public static final int SC_METHOD_NOT_ALLOWED = 405;  不支持的请求方法
+			public static final int SC_INTERNAL_SERVER_ERROR = 500;  内部服务器错误
+			public static final int SC_BAD_GATEWAY = 502;  错误的网关
+			public static final int SC_SERVICE_UNAVAILABLE = 503;   当前服务端的服务不可用
+	
+	4)、session  会话对象   javax.servlet.http.HttpSession
+		会话：一个客户端请求一个网站应用，建立一个连接，此连接可以称之为会话
+			A客户端请求/JSPInnerObject   建立A会话
+			假设A登录到系统中，此时系统需要保存A的一些基本信息，这些基本信息可以保存到会话里
+			会话信息保存在服务端。一旦保存了会话，此会话对象可以在同一个连接的任何网页上都使用
+			B客户端请求/JSPInnerObject   建立B会话
+			
+	5）、application   应用程序对象    javax.servlet.ServletContext   Servle0.t上下文
+		不同的会话都共享的一个对象。所有客户端的任何页面都 可以访问的一个对象
+		
+	6）、page    页面对象    java.lang.Object, 但是本质上是servlet类名称
+		用于表示jsp页面本身
+		在jsp页面中可以强制转换成servlet类
+		
+	7）、pageContext   页面上下文对象   javax.servlet.jsp.PageContext
+		表示页面的上下文
+		此类中定义了四个作用范围：
+		public static final int PAGE_SCOPE = 1;  // 页面作用域，表示只在当前的jsp页面中可用
+			out, response, page, pageContext，config, exception
+
+    	public static final int REQUEST_SCOPE = 2; // 请求作用域，表示只能在当前请求中可用
+    		request
+
+    	public static final int SESSION_SCOPE = 3; //会话作用域，表示只能在当前建立的会话中可用
+    		session
+
+   		public static final int APPLICATION_SCOPE = 4; //应用程序作用域，表示能在整个应用程序执行过程中都可用
+   			application
+		
+		范围从小到大：PAGE_SCOPE < REQUEST_SCOPE < SESSION_SCOPE < APPLICATION_SCOPE
+		
+	8)、config    配置对象  javax.servlet.ServletConfig
+		用于获取servlet的一些初始化配置信息
+		
+	9）、exception   异常对象     java.lang.Exception
+		只能作用于声明为错误页的页面
+		getMessage();
+		getThrowable();
+		getCause()
+	
+	10）pageContext, request, session, application都有以下方法
+		setAttribute()
+		getAttribute()
+		removeAttribute()
+			
+3、内置对象的作用域
+
+4、Cookie与Session	
+	
+5、URL路径问题
+	<form action="/reg.jsp"></form>
+	如果加了/，去掉了Context Path, 404错误
+	<form action="reg.jsp"></form>
+	默认从Context Path开始，正常的情况
+	
+	<%
+		String path = request.getContextPath(); //获取上下文路径
+	%>
+	为了不出现路径的错误，以后统一以<%=path %>开头，以此路径开头，可以认为是以WebContent目录为根目录
+	
+	
+	
+	

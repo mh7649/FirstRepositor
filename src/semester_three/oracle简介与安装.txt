@@ -1,0 +1,116 @@
+1、默认的全局数据库名：
+	orcl
+	
+2、全局数据库，数据库实例SID
+	在oracle中一个数据库实例对应一个数据库 orcl, SID（System Identifiert系统标识符）名称
+	
+	如果想要使用一个新的数据库，则需要创建一个新的数据库实例
+	
+3、常用账户
+	安装完毕后，只有system, sys账户是可用的，其他账户都被锁定（不可用）
+	system	manager	具有DBA权限，用于执行数据库管理工作
+	sys	change_on_install	就有DBA权限，拥有SYS模式，具有最高级别的权限，可在启动实例、打开数据之前连接，必须以SYSDBA身份登陆
+	scott	tiger	普通用户（12c版本中已不存在此账户），能在自己模式中创建表、视图等数据库对象
+	
+	身份：
+	sysdba身份：数据库管理员身份
+	
+4、Oracle的组成部分
+	1）内存结构：数据库启动时，系统首先在服务器内存中分配系统全局区（SYSTEM GLOBAL AREA，SGA），即构成了Oracle的内存结构
+		系统全局区(SGA)：
+			是运行在客户机上的用户进程和运行在服务器上的服务器进程所使用的内存区域。
+			该区域的数据是共享的
+			数据缓冲区、字典缓冲区、日志缓冲区、SQL共享区
+			启动数据库时分配该区域，关闭时释放。
+		程序全局区(PGA)：
+			单个用户进程所使用的内存区域
+			每个进程都有自己的私有区域，存放单独的数据和控制信息
+			不共享
+		后台进程：
+			系统监视进程(SMON)
+			进程监视进程(PMON)
+			数据库写入进程(DBWR)
+			日志写入进程(LGWR)
+			归档进程(ARCH)
+			恢复进程(RECO)
+
+
+	逻辑结构：Oracle由表空间（tablespace）构成，表空间由表，视图，索引构成。一个数据库可以多个表空间。
+		每个数据库可以有多个表空间，每个表空间可以有多个表，每个表可以有多个段，每个段可有多个分区，每个分区可以有多个数据块。
+			表段区块
+	物理结构（存储的文件）：参数文件ora,控制文件ctl,数据文件dbf,日志文件log
+	select * from v$controlfile;--查询控制文件
+	select * from v$datafile;--查询数据文件
+	select * from v$logfile;--查询日志文件
+	
+5、Oracle数据库系统的一些常用工具：
+	https://localhost:5500/em，此URL是EM Database Express是一个用于管理数据库实例的WEB端工具
+	Database Configuration Assistant 数据库配置助手
+		1）创建数据库，删除数据库
+	Admistrator Assitant for Windows：可以查看当前Oracle数据库系统的计算机，包含哪些数据库实例
+	Database Migration Assistant:数据库迁移助手，从一个编码转化到另外一个编码
+	Database Upgrade Assistant数据库升级助手
+	Net Manager：用于网络管理，比如监听程序的配置和服务的配置
+	Net Configuration Assistant：网络配置助手，以向导的形式创建新的监听程序
+	
+6、SQL Plus
+	sys as sysdba
+	123456
+	命令提示符：
+	SQL>sql命令
+
+7、SQL Developer
+	1）新建连接
+		用户名：sys as sysdba
+		口令：123456
+		主机名：localhost
+		服务名：orcl1
+	
+8、PL/SQL Developer
+	New->SQL Window 打开编写与执行sql语句的窗口（新建查询）
+	New->Command Window 打开命令提示窗口，与SQL Plus类似，可以执行sql语句，也可以执行oracle的其他命令
+
+9、数据类型
+	blob: 二进制大数据(大对象)
+	clob: 字符大数据（大对象）
+	Nclob:unicode编码类型
+	
+	long: 可变长度的字符串，2GB
+	long raw:原始二进制数据
+	
+	binary_double: 64位，总共占用9个字节，还有一个字节用于记录长度
+	binary_float: 32位，总共占用5个字节，还有一个字节用于记录长度
+			3.40282E+38F
+
+			1.79769313486231E+308
+
+			1.17549E-38F
+
+			2.22507485850720E-308
+			
+	char固定长度，最多存储2000个字节，如果是英文字符，一个英文占用一个字节，一个中文占用两个字节
+	nchar，基于unicode编码，最多存储2000个字节。中英英文字符都占用两个字节
+	***varchar2可变长度（Oracle推荐使用此种类型）最多存储4,000个字节
+	nvarchar2可变长度，基于unicode编码， 最多存储4,000个字节
+	
+	number(P,S) P:precison 即精度缩写，表示有效数字的位数，最多不能超过38个有效数字 S:scale   表示从小数点到最低有效数字的位数，它为负数时，表示从最大有效数字到小数点的位数 
+	integer:表示整数，但是不推荐使用
+	Float(n),数 n 指示位的精度，可以存储的值的数目。N 值的范围可以从 1 到 126
+	
+	DATE是最常用的数据类型，日期数据类型存储日期和时间信息
+	TIMESTAMP类型
+	
+	rowid：在数据库中的每一行都有一个逻辑地址
+	
+10、表空间
+	system
+	temp
+	users
+	
+	
+11、驱动程序：oracle.jdbc.driver.OracleDriver
+	URL：jdbc:oracle:thin:@localhost:1521:orcl1
+	
+12、建立连接
+	SQL>conn 用户名/密码@sid
+	

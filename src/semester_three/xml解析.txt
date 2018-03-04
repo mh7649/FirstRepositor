@@ -1,0 +1,40 @@
+1、DOM解析
+	基于文档对象模型
+	优点：
+
+　　　　　　1、形成了树结构，有助于更好的理解、掌握，且代码容易编写。
+
+　　　　　　2、解析过程中，树结构保存在内存中，方便修改。
+
+　　　　缺点：
+
+　　　　　　1、由于文件是一次性读取，所以对内存的耗费比较大。
+
+　　　　　　2、如果XML文件比较大，容易影响解析性能且可能会造成内存溢出。
+
+	节点：
+	类型  #text   Node.TEXT_NODE
+	属性	        Node.ATTRIBUTE_NODE
+	元素                           Node.ELEMENT_NODE
+	CDATA节点           Node.CDATA_SECTION_NODE
+	注释节点                  Node.COMMENT_NODE
+
+2、SAX解析 Simple APIs for XML
+	优点：
+
+　　　　　　1、采用事件驱动模式，对内存耗费比较小。
+
+　　　　　　2、适用于只处理XML文件中的数据时。
+
+　　　　缺点：
+
+　　　　　　1、编码比较麻烦。
+
+　　　　　　2、很难同时访问XML文件中的多处不同数据。
+
+	主要事件：
+	startDocument
+	endDocument
+	startElement
+	endElement
+	characters

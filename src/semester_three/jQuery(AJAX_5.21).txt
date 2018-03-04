@@ -1,0 +1,143 @@
+1、jQuery 是一个 JavaScript 库。
+	jQuery 极大地简化了 JavaScript 编程。
+	jQuery 很容易学习。
+	
+	jQuery库包含以下功能：
+	HTML 元素选取
+	HTML 元素操作
+	CSS 操作
+	HTML 事件函数
+	JavaScript 特效和动画
+	HTML DOM 遍历和修改
+	AJAX
+	
+2、常用的JS框架
+	AngularJS, vue.js(模块化框架), React
+	此三个JS框架暂时不看
+	
+	jQuery EasyUI(专业的后台管理框架)
+	
+	node.js(用于服务端运行的JS)
+	
+3、jQuery对象与JS对象
+	$("#")
+	$(".")
+	$("div")
+	
+	只要是以$符号获取到的HTML元素都是jQuery对象
+	
+4、选择器
+	# id选择器，返回唯一的一个对象
+	.  类选择器，返回多个对象
+	标签选择器，返回多个对象
+	
+	如果返回的是数组，在对数组进行循环的过程，获取出来的对象是JS对象，必须把js对象转化成jQuery对象
+	$(js对象)
+	
+	复杂的选择器：
+	$("*")	选取所有元素
+	$(this)	选取当前 HTML 元素
+	$("p.intro")	选取 class 为 intro 的 <p> 元素
+	$("p:first")	选取第一个 <p> 元素
+	$("ul li:first")	选取第一个 <ul> 元素的第一个 <li> 元素
+	$("ul li:first-child")	选取每个 <ul> 元素的第一个 <li> 元素
+	$("[href]")	选取带有 href 属性的元素
+	$("a[target='_blank']")	选取所有 target 属性值等于 "_blank" 的 <a> 元素
+	$("a[target!='_blank']")	选取所有 target 属性值不等于 "_blank" 的 <a> 元素
+	$(":button")	选取所有 type="button" 的 <input> 元素 和 <button> 元素
+	$("tr:even")	选取偶数位置的 <tr> 元素
+	$("tr:odd")	选取奇数位置的 <tr> 元素
+	
+5、jquery事件
+	click(function(){});
+	dblclick(function(){});
+	focus();
+	blur();
+	mouseenter();
+	mouseleave();
+	hover();
+	mousedown();
+	mosueup();
+	change();
+	scroll();
+	
+6、jQuery常用函数 
+	val(); 获取输入框的内容
+	val("new text");   修改输入框的内容
+	text(); 获取标签内部的内容    innerHTML属性
+	text("text"); 修改标签内部的内容
+	html();获取包含有html标签的内容
+	html("<a href='www.baidu.com'>test</a>");
+	attr("attr_name"); 获取标签指定的属性的值 
+	attr("attr_name", "attr_value");  设置指定属性的值 
+	
+	css("css_name"); 获取css样式的值 
+	css("css_name", "css_value") 设置单个css样式的值 
+	css({"":"","":""}); 设置多个css样式的值 
+	
+	append(""); 在被 选择的元素内部的末尾追加元素，追加内容
+	prepend("") 在被 选择的元素内部的开头追加元素，追加内容
+	after() - 在被选元素之后插入内容
+	before() - 在被选元素之前插入内容
+	
+	remove() - 删除被选元素（及其子元素）
+	empty() - 从被选元素中删除子元素
+	
+	removeClass("class1 class2");
+	addClass("class1 class2");
+	
+	parent(); 获取直接父元素
+	parents(); 获取所有的祖先
+	
+	children(); 获取所有的子元素
+	find(); 查找子元素
+	
+	siblings(); 获取所有的同胞元素
+	next(); 获取下一个同胞元素
+	prev(); 获取上一个同胞元素
+	
+7、标签的位置属性
+	position:static(默认的静态)|relative|absolute
+	
+	absolute设置为绝对定位，此时可以给标签设置top, left
+	
+8、jQuery插件
+	jquery.min.js实际是一个核心的jQuery，基于核心的jQuery创造新的jQuery库
+	
+9、效果及动画
+	hide(); show();
+	fadeIn(); fadeOut();
+	slideUp(); slideDown();
+	animate(); stop();
+	
+10、jquery ajax操作 （更加的详细的内容请参考此网页：http://www.runoob.com/jquery/jquery-ref-ajax.html）
+	语法：
+	$.get(URL,callback, dataType);
+	必需的 URL 参数规定您希望请求的 URL。
+	可选的 callback 参数是请求成功后所执行的函数名。
+	下面的例子使用 $.get() 方法从服务器上的一个文件中取回数据：
+	实例
+	$("button").click(function(){
+	  $.get("demo_test",function(data,status){
+	    alert("数据: " + data + "\n状态: " + status);
+	  });
+	});
+	
+	
+	$.post(URL,data,callback, dataType);
+	必需的 URL 参数规定您希望请求的 URL。
+	可选的 data 参数规定连同请求发送的数据。
+	可选的 callback 参数是请求成功后所执行的函数名。
+	下面的例子使用 $.post() 连同请求一起发送数据：
+	实例
+	$("button").click(function(){
+	    $.post("/try/ajax/demo_test_post",
+	    {
+	        name:"菜鸟教程",
+	        url:"http://www.runoob.com"
+	    },
+	        function(data,status){
+	        alert("数据: \n" + data + "\n状态: " + status);
+	    });
+	});
+	

@@ -1,0 +1,122 @@
+1、easyui是一种基于jQuery的用户界面插件集合。
+
+  easyui为创建现代化，互动，JavaScript应用程序，提供必要的功能。
+
+  使用easyui你不需要写很多代码，你只需要通过编写一些简单HTML标记，就可以定义用户界面。
+
+  easyui是个完美支持HTML5网页的完整框架。
+
+  easyui节省您网页开发的时间和规模。
+
+  easyui很简单但功能强大的。
+
+  extJS（重量级框架）的功能与easyui（轻量级框架）非常类似
+
+2、如何使用jquery easyui
+    1）下载相关的js，css
+    2）引用themes目录下的指定主题目录下的easyui.css
+    icon.css
+    3)引用jquery.js, jquery.easyui.min.js
+
+3、EasyUI插件
+    1）布局：easyui-layout
+        data-options  easyui的自定义属性，用于描述插件的一些基本信息
+
+        在html5中可以支持开发者自定义属性，data-
+
+    2)手风琴：easyui-accordion
+        默认打开使用selected:true
+
+    3)选项卡：easyui-tabs
+        请参考site-easyui.js，提供了选项卡实时添加，刷新，关闭等功能
+
+    4）面板：easyui-panel
+        可以嵌套其他任何组件
+    5）对话框：easyui-dialog
+        $("#dlgId").dialog("open|close");
+    6)窗口：easyui-window
+        $("#winId").window("open|close");
+
+        如果要变成模态窗口，则在data-options中加modal:true
+    7)消息：messager
+        $.messager.alert("标题", "消息", "info|warning|question|error");
+
+        $.messager.confirm("标题", "消息", function(result) {
+            if (result) {
+                // 点击了确定按钮
+            }
+        });
+
+        $.messager.prompt("标题", "消息", function(content) {
+            alert("content为输入的内容");
+        });
+
+    8)链接式按钮：easyui-linkbutton
+    9)菜单按钮：easyui-menubutton
+        需要在data-options中指定引用哪个菜单 div
+    10)右键菜单 ：easyui-menu
+        通常需要绑定右键菜单事件
+        $(document).bind('contextmenu',function(e){
+        				e.preventDefault(); // 清除js默认的事件，防止事件冒泡
+        				$('#mm').menu('show', {
+        					left: e.pageX,
+        					top: e.pageY
+        				});
+        			});
+    11)树：easyui-tree
+    12）表单：不需要使用任何的class，与原先的使用一致
+        a、与验证箱一起完成表单验证，easyui-validatebox取消一显示form就验证的功能：novalidate:true
+            提交的表单的时候，对表单进行验证：$("#form").form("enableValidation").form("validate");
+            如果验证成功，上面的方法返回true，否则返回false
+    13)文本框：easyui-textbox
+        data-options:validType:'url|email'
+    14)数值框：easyui-numberbox
+        data-options：precision指定小数点位置，groupSeparator指定分割符,min最小值 ，max最大值
+    15）下拉菜单 ：easyui-combobox
+        valueField用于指明json格式中哪个key作为option的value数据
+        textField用于指明json数据中哪个key作为option的内容
+        data用于指明数据，数据格式如下 ：
+        [{"id":"","text":"","selected":true|false}]
+
+        也可以加载远程数据
+        url:返回json格式的服务端地址
+        method:请求方式
+    16）日期框：easyui-datebox
+        默认格式：yyyy-MM-dd
+        data-options: formatter:format函数
+    17）日期时间框：easyui-datetimebox
+        默认格式：yyyy-MM-dd HH:mm:ss
+        如果需要给定默认值，只需要添加 value,并且值按照默认格式来书写
+    18)时间微调：easyui-timespinner
+    19)日期时间微调：easyui-datetimespinner
+    20)数字微调器：easyui-numberspinner
+        data-options: increment指明增量
+    22)验证箱：easyui-validatebox
+        required
+        validType:email|url|legnth[2,20]
+        min
+        max
+
+    23)数据表格：easyui-datagrid
+        应用在table标签上
+
+        <th>用于指明table的标题，并且data-options中field属性，此field属性与返回的json格式中的数据的key保持一致
+        </th>
+
+        data-options="
+                singleSelect:true, // 单选
+                collapsible:true,
+                rownumbers:true, // 显示行号
+                pagination:true, // 开启分页
+                pageSize:20, // 每页默认的大小
+                url:'<%=path %>/product/pager', // 从哪个 url 获取数据
+                method:'get'"> // 请求方法
+        url所返回的数据是json格式的数据，必须包含两个属性
+        total:10
+        rows:[{每一行所对应的对象},{},{}]
+
+        在site_easyui.js中添加了一个setPagination的方法自定义分页组件的显示
+
+        datagrid分页组件会自动把page和rows参数传递到后台
+
+        $("#list").datagrid("reload");

@@ -1,0 +1,98 @@
+1、JSON：JavaScript 对象表示法（JavaScript Object Notation）
+	JSON 是存储和交换文本信息的语法。类似 XML。
+	JSON 比 XML 更小、更快，更易解析。
+	可以使用JSON来描述对象
+	
+2、什么情况下用到JSON?
+	前端页面与后台的数据交互：JSON格式
+	安卓和苹果手机程序与后台的交互:JSON格式
+	几乎所有的开放接口都是返回JSON
+	
+3、简易的JSON格式及复杂的JSON格式
+	对象：一个{}表示一个对象
+	{"property":"value"} 一个对象有一个属性 ，属性名称为property，值为value
+	{"property1":"value1","property2":"value2"}
+	
+	User {
+		private int id;
+		private int age;
+		private String name;
+		private String gender;
+		private boolean hasJob;
+	}
+	
+	id = 100;
+	age = 20;
+	name = "小明";
+	gender = "男";
+	{"id":100,"age":20,"name":"小明","gender":"男","hasJob":false}
+	
+	属性的名称一定要用双引号扩起来，但是值只是String，char才需要双引号，而数值不需要双引号,
+	布尔类型只能是true或false;
+	
+	Children {
+		private int id;
+		private String name;
+		private Date birthday;
+	}
+	
+	User {
+	
+		private int id;
+		private int age;
+		private String name;
+		private String gender;
+		private boolean hasJob;
+		private List<Children> children;
+	}
+	
+	{"id":100,"age":20,"name":"小明","gender":"男","hasJob":false,
+	"children":[{"id":1,"name":"no1","birthday":"2017-01-01"},{"id":2,"name":"no2","birthday":"2017-01-01"}]}
+	
+	数组类型用[]扩起来
+	如果说数组是多个对象则把多个对象放入到[]，多个对象间用空格隔开---》[{}, {}, {}]
+	
+	
+	[{"id":1001,"name":"test"}, {"id":"1002","name":"test1"}]
+	
+	Test[];
+	List<Test>
+	
+4、function(data) { // {"info":"用户名或密码错误"}
+	data.info
+  }
+  
+  var jsonObj = {"id":100,"age":20,"name":"小明","gender":"男","hasJob":false,
+	"children":[{"id":1,"name":"no1","birthday":"2017-01-01"},{"id":2,"name":"no2","birthday":"2017-01-01"}]};
+	jsonObj.id; user的id
+	jsonObj.age; user的age
+	jsonObj.name; user的name
+	
+	jsonObj.children[0].id;
+	jsonObj.children[1].birthday;
+	
+	
+	var jsonObj = {"id":100,"age":20,"name":"小明","gender":"男","hasJob":false,
+		"children":[{"id":1,"name":"no1","birthday":"2017-01-01"},{"id":2,"name":"no2","birthday":"2018-01-01"}]};
+		alert(jsonObj.id);
+		alert(jsonObj.age);
+		alert(jsonObj.name);
+		
+		for (var i = 0, len = jsonObj.children.length; i < len; i++) {
+			alert(jsonObj.children[i].id);
+			alert(jsonObj.children[i].birthday);
+		}
+	
+5、如何检验JSON格式是否正确：
+	百度搜索JSON格式在线校验
+	
+6、如何把JSON字符串转化成JSON对象
+	前端如何转化：eval(),    json2.js此库文件也可以完成JSON字符串到JSON对象的转化，并且能够完成JSON对象到JSON字符串的转化
+	后台如何转化：借助专门对JSON处理的Java库文件
+	fastjson.jar 阿里巴巴
+	gson.jar    Google
+	jackson   Apache
+	
+	FastJSON的JSON类使用请参考FastJSONTest.java类
+	
+	

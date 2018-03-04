@@ -1,0 +1,34 @@
+1、<jsp:useBean />
+	id:生成的JavaBean实例的名称
+	class:用于指定JavaBean的类型
+	type：与class一致，用于指定JavaBean的类型
+	scope:用于指定生成的JavaBean在哪个作用范围内
+	beanName:组件名，一般很少用
+	
+	class与type的区别：
+	class如果JavaBean为空，则创建JavaBean（统一用class）
+	type如果JavaBean为空，则招聘异常
+	
+	useBean实例化一个类的对象
+	
+2、<jsp:setProperty>与<jsp:getProperty>
+	name：用于指定哪个对象名，name与<jsp:useBean>里的id一致
+	property：对象的属性名
+	value:值
+	
+	以上两个标签都可以放在或不放在<jsp:useBean>标记内部，通常不放在里面
+	
+3、scope
+	page  把生成的JavaBean实例放在pageContext内置对象里，当前页面可用
+	request   request内置对象里，当前请求可用
+	session   session内置对象里，当前会话的所有页面可用
+	application    application内置对象里，整个应用的所有页面都可用
+	
+4、与form表单结合
+	
+	自省机制：
+	由form表单的数据自动封装到指定的JavaBean中
+	
+	form表单的name属性的值与<jsp:setProperty>中的param保持一致，则form表单的值 会自动设置到javabean的属性
+	
+	form表单的name与JavaBean对象中属性名如果一致，则<jsp:setProperty>可以不指定param属性

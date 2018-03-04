@@ -1,0 +1,120 @@
+1、javax.swing.JFrame extends java.awt.Frame   
+
+	如何关闭：
+	setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE|
+		WindowConstants.DISPOSE_ON_CLOSE|
+		WindowConstants.EXIT_ON_CLOSE|
+		WindowConstants.HIDE_ON_CLOSE);
+	dispose，如果有多个窗口，只有到了最后剩下一个窗口，整个程序才会退出
+	exit，整个程序退出
+	hide，隐藏窗口
+	do_nothing，什么都不做
+	
+	布局方式与AWT完全一致，增加了一个BoxLayout表示沿着x轴排列BoxLayout.X_AXIS，或者沿着y轴排列BoxLayout.Y_AXIS
+	
+	UIManager.setLookAndFeel(""); 用于设置主题文件
+		主题用一个类的全限定名来指定，任何一个主题都是一个类
+		
+2、JFrame的窗口Panel
+	JFrame中默认有一个根面板，可以使用getContentPane()方法获取到此根面板，如果需要设置布局，应该在根面板上设置布局
+	
+3、Swing的事件监听
+	AWT里有的，在Swing中一样的用法
+	Swing还扩展了其他的一些组件，则这些组件可能需要使用新的事件
+	
+4、Swing的对话框
+	1）消息对话框 
+		JOptionPane.showMessageDialog(LoginFrame.this, "你好"); // 两个参数的，第一个参数表示父窗口对象，第二个参数表示显示的信息
+		JOptionPane.showMessageDialog(LoginFrame.this, "你好", "提示", JOptionPane.INFORMATION_MESSAGE);
+		// 第三个参数是对话框的标题，第四个参数是消息类型
+			a. JOptionPane.INFORMATION_MESSAGE 普通消息
+			b. JOptionPane.WARNING_MESSAGE 警告消息
+			c. JOptionPane.ERROR_MESSAGE  错误消息
+			d. JOptionPane.PLAIN_MESSAGE   没有图标的普通消息
+			e. JOptionPane.QUESTION_MESSAGE   提问消息
+	2)确认对话框
+	int result = JOptionPane.showConfirmDialog(LoginFrame.this, "确定删除？", "提示", JOptionPane.NO_OPTION);
+	3)输入对话框
+	String strResult = JOptionPane.showInputDialog(LoginFrame.this, "请输入值", "输入", JOptionPane.INFORMATION_MESSAGE);
+	
+5、组件
+	组件的基本结构：
+ 		java.awt.Component(所有组件类的父类)
+ 				java.awt.Button按钮
+ 				java.awt.Canvas画布，可在此画布上绘制图形
+ 				java.awt.Checkbox复选框
+ 				java.awt.Choice单选框
+ 				java.awt.Container容器类
+ 						java.awt.Window窗口（Window 对象是一个没有边界和菜单栏的顶层窗口）
+ 								java.awt.Dialog对话框
+ 								java.awt.Frame框架（Frame 是带有标题和边框的顶层窗口）
+ 						java.awt.Panel面板
+ 						java.awt.ScrollPane滚动面板
+ 				java.awt.Label标签，显示文本的组件
+ 				java.awt.List列表，类似于HTML中多选下拉菜单
+ 				java.awt.Scrollbar滚动条
+ 				java.awt.TextComponent文本输入组件
+ 						java.awt.TextField单行文本输入区域
+ 						java.awt.TextArea多行文本输入区域
+ 						
+ 		java.awt.Component
+ 				java.awt.Container
+ 							java.awt.Window
+ 										java.awt.Frame
+ 													javax.swing.JFrame
+ 										java.awt.Dialog
+ 													javax.swing.JDialog(与AWT的Dialog用法几乎一致，可以使用javax.swing.JOptionPane来替代)
+							javax.swing.JComponent (Swing的组件的父类)
+									javax.swing.JLabel（与AWT的Label用法几乎一致）
+									javax.swing.JComboBox
+									javax.swing.JPanel（与AWT的Panel用法几乎一致）
+									javax.swing.JTextComponent
+											javax.swing.JTextField（与AWT的TextField用法几乎 一致）
+													javax.swing.JPasswordField(密码框)
+											javax.swing.JTextArea（与AWT的TextArea用法几乎一致）
+											javax.swing.JEditPane(可编辑各种内容的文本组件)
+									javax.swing.JOptionPane(用于替代JDialog)
+									javax.swing.JMenuBar（与AWT的MenuBar用法几乎一致）
+									javax.swing.JList（与AWT的List用法几乎一致）
+									javax.swing.JToolbar（工具栏）
+									javax.swing.JTree(树结构)
+									javax.swing.JTable(表格)
+									javax.swing.JTabbedPane(选项卡面板)
+									javax.swing.JProgressBar进度条
+									javax.swing.JScrollBar滚动条
+									javax.swing.JScrollPane可滚动的面板
+									javax.swing.JFileChooser文件选择对话框
+									javax.swing.AbstractButton(按钮的抽象类)
+											javax.swing.JButton（与AWT的Button用法几乎一致）
+											javax.swing.JToggleButton(状态变化的按钮)
+													javax.swing.JCheckBox（复选框）
+													javax.swing.JRadioButton(单选框)
+											javax.swing.JMenuItem(菜单项，与AWT的MenuItem的用法几乎一致)
+													javax.swing.JMenu(菜单，与AWT的Menu的用法几乎一致)
+									javax.swing.JColorChooser(颜色选择框)
+
+6、当使用JComboBox时，需要用<>来告诉JComboBox里的内容的类型是什么
+		泛型：表示一个存储数据的容器可以存储多种数据类型，但是真正使用时候，必须明确告知只能存储哪种数据类型
+		
+		如果没有加泛型，则出现以下警告：
+		*** is a raw type. References to generic type JList<E> should be parameterized
+		
+7、JList及JTable
+		JList可以给它设置数据模型，预先准备好的数据，JDK提供了一个DefaultListModel类来准备数据
+		
+8、调试
+	1）断点
+		在程序的某一行设置一个标志，当启用调试功能时，一旦运行到设置的断点，则程序暂停运行，此时可以根据
+		调试视图查看程序内存数据
+	2）把程序停止在某一行来查看程序内存中存储的数据
+	
+9、如何完成JList和JTable的数据更新
+		使用默认的DefaultListModel和DefaultTableModel
+		如果想要让JList和JTable更新，则只需要去修改数据模型
+		往数据模型添加数据，删除数据，修改数据，组件的内容会自动更新
+		
+10、AWT与Swing的画图 
+		AWT repaint完成图像的重绘，默认调用update方法 
+		Swing repaint完成图像的重绘，默认调用paint方法
+									
+									

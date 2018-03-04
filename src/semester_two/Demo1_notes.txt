@@ -1,0 +1,37 @@
+1、 pageSize   一页中显示多少项
+	pageNo    第几页
+	
+	1
+	2
+	3
+	4
+	5
+	6
+	7
+	8
+	9
+	10
+	
+	pageSize = 3
+	
+	pageNo = 1
+	
+	1, 2, 3     select top 3 * from table not in (select top 0 id from table)
+	
+	pageNo = 2
+	
+	4, 5, 6     select top 3 not in (select top 3 id from table)  不在前三条中的前三条，先把前三条去掉，再拿三条
+	
+	pageNo = 3
+	
+	7, 8, 9       select top 3 not in (select top 6 id from table) 不在前六条中的前三条，先把前六条去年，再拿三条
+	
+	select top pageSize * from table not int (select top (pageNo - 1) * pageSize id from table)
+	
+求总页数：
+
+总条数为102个
+pageSize = 5
+
+如果total % pageSize = 0  ----> total / pageSize = 20
+唱歌total % pageSize != 0  -----> total / pageSize + 1 = 21

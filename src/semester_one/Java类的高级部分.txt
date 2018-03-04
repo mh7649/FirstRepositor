@@ -1,0 +1,192 @@
+1、类的封装
+	把类的细节隐藏，让其他类不知道你的类有什么属性
+	
+	把属性用private来修饰，其他类不能访问到这些属性，可以提供setter访问器来设置属性,getter访问器来获取属性
+	其他类型直接使用setName,getName
+	布尔类型setHasPhone, isHasPhone(做判断)
+	
+	1）安全性
+	2）便于维护
+	
+2、类的继承
+	一个类的成员属性和成员方法能够被其他类所继承，这个类就称之为父类，其他类称之为子类
+	extends关键字
+	
+	一个子类继承自一个父类又可以叫做父类派生出一个子类
+	一个子类只能同时继承自一个父类（不能多继承）
+	构造方法不能被继承
+	
+	可以多层继承：
+	SubSon继承自Son,Son继承自Parent
+	
+	一个父类可以有多个子类：
+	Son继承自Parent,
+	Son1继承自Parent
+	
+	继承还能够在子类中增加个性化的属性和方法
+	
+	如果子类没有重新实现父类中的方法，则当子类调用继承下来的方法时，直接使用父类的方法逻辑。 如果
+	子类想要有自己的逻辑，则必须重新实现被继承下来的方法，这个过程称之为方法重写
+	重载：同一个类中，方法名相同，参数列表不相同 
+	重写：子类继承父类中的方法，方法名称和参数列表，返回类型都一样，并且需要在前面添加@Override注解
+			方法重写时，方法的访问修饰符必须大于等于父类中的访问修饰符的权限
+	
+3、访问修饰符的总结（从大到小），访问修饰符适用于属性和方法：
+		1）public 公开的
+		
+		2）protected 受保护的
+		
+		3）默认的
+		
+		4）private 私有的
+															public        protected        默认的        private
+		1）同一个类中								是				是					是				是
+		2）同一个包中的子类					是				是					是
+		3）同一个包中的非子类				是				是					是
+		4）不同包中的子类						是				是
+		5）不同包中的非子类					是		
+		
+		总结：public:所有的类
+			protected:不能被其他包中的非子类访问 
+			默认的：同一个包中的	
+			private:本类	
+			
+4、super关键字（超类，相对于this来说）
+	this:本类对象
+	super:父类对象	
+	
+	实例化一个子类的时候，在子类的构造方法中没有明确指明调用父类哪个构造方法的时候，
+	一定会先调用父类的无参构造方法。
+	为了明确地在子类中指明调用父类的哪个构造方法，则可以使用super来引用父类的构造方
+	法super(); super("name");		
+	
+	super还可以调用父类的成员方法，也可以调用父类的非private修饰的属性，如果在子类通
+	过super来设置父类中的某个属性，
+	则子类中此属性的值与父类保持一致。但是，如果在子类给此属性重新赋值，则子类的中
+	此属性的值是重新赋值后的值
+		
+	如果子类中想使用super来调用父类的构造方法，则调用的语句必须放在子类构造方法的第一行
+		
+5、类的转换
+	Dog extends Animal
+	子类可以直接赋值给父类对象   Animal a = new Dog();    （直接使用父类来引用子类的实例）
+		会存在以下问题：Dog dog = new Dog()；dog可以引用到Dog类的所有非private的方法
+		Animal a = dog;    a却只可以引用到父类里的所有非private方法
+		Animal a = new Dog(); // a对象本质是接收的一个Dog类的对象，所以下面这句代码可以强制转换
+		Dog d = (Dog) a;
+	父类不可以转换成子类对象  Dog d = (Dog) new Animal();   这个是错误的 
+	
+6、同一个 Java源文件里写多个类
+	只能有一个public修饰的class，并且此class的名称与.java的文件名保持一致。不能出现除默认修饰符以外的class
+	
+7、内部类
+	在一个类的内部再定义类
+	内部类可以使用任何一个修饰符
+	1）实例内部类
+	public class ClassName() {
+	
+	}  
+	
+	out.new ClassName();
+	
+	实例内部类里的实例方法可以直接使用外部类的实例变量和静态变量
+	实例内部类里的静态方法可以直接使用外部类的静态变量
+	
+	实例内部类里的实例方法可以直接使用外部类的实例方法和静态方法
+	实例内部类里的静态方法可以直接使用外部类的静态方法
+	
+	2）静态内部类
+	public static class ClassName() {
+	
+	}
+	
+	new Out.ClassName();
+	
+	静态内部类只能使用外部类的静态变量
+	
+	静态内部类只能使用外部类的静态方法
+	
+	3）局部内部类，在方法内部定义的类，只能用默认修饰符，只能在方法内部使用
+	局部内部类的实例方法能访问外部类的实例变量和静态变量
+	局部内部类的静态方法只能访问外部类的静态变量
+	局部内部类的方法如果要使用局部变量，则此局部变量只能被获取值，而不能被修改（不要在局部内部类中去修改局部变量的值）
+	
+	局部内部类的实例方法能访问外部类的实例方法和静态方法
+	局部内部类的静态方法只能访问外部类的静态方法
+	
+	4）匿名内部类，没有class和名字一个类
+	
+8、final关键字
+	1)常量
+		public static final Data_type variable_name = value;
+	2)来修饰一个类
+		public final class ClassName {
+		
+		}
+		此类不能被继承
+	3）修饰方法
+		public final void eat() {
+		}
+		那么在子类中此方法不能被重写
+		
+9、java.lang.Object类是jdk提供的最核心的一个类，所有的类都继承自java.lang.Object类
+	1)object()构造方法，用于创建Object类的对象
+	2）registerNatives()方法，Java语言与C语言交互
+	**3）getClass()方法，获取某个对象的Class是什么
+		getClass()返回Class类的实例，Class是用来存储一个类的基本信息（类的名称，类有哪些属性，类有哪些方法）
+		p.getClass()返回描述p对象所属类的信息
+	****4）hashCode()，用来返回对象的哈希码（将来会有在HashMap和HashTable中）
+	****5）equals(Object obj);   默认比较两个对象的地址，重新实现成比较对象的内容
+	6）clone()，克隆，对对象进行copy
+	*****7）toString()，默认是类的全限定名+@+hashCode，需要重新实现此方法用于输出对象的内容
+	8）notify()
+	9) notifyAll()
+	10)wait()
+	11)wait(long)
+	12)wait(long, int)
+	***13) finalize()   用来垃圾回收
+	
+10、java.lang.String，字符串类
+		java.lang.StringBuffer
+		java.lang.StringBuilder
+		
+		String a = "abc";
+		String b = new String("abc");
+		String c = "abc";
+		String d= new String("abc");
+		a与c都在字符串池，如果值相等，则没必要重新生成一个String对象，而是直接指向同一个对象
+		
+		如果对字符串比较值，则一定使用equals()方法
+		
+		String类是final的，不可被继承
+		
+		StringBuffer是线程安全的
+		StringBuilder是非线程安全的
+		
+		StringBuilder > StringBuffer > String (大部分情况下如此)
+		Java核心技术卷一，Java核心技术卷二
+		Thinking in Java  Java编程思想
+		深入Java虚拟机
+		Effective Java
+		
+		基本使用原则：如果要做大量的字符串拼接操作，并且不考虑线程安全性问题的情况下，请使用StringBuilder，如果要考虑
+		线程安全性问题，则使用StringBuffer。少量字符串的拼接操作，则可以直接使用String类
+		
+		空串与null：
+		空串是指字符串对象中没有任何内容   “”；
+		null是指字符串对象没有引用(空引用)，不存在一个空间来存储对象
+		String a = "abc"; // 正常的
+		a = null; // 空引用  null
+		
+11、面向对象的三大特性
+	1）封装
+		属性私有化，提供属性的getter/setter
+	2）继承
+		单继承，多层继承
+	3）多态
+		Person read();
+		Student read(), Teacher read();
+		重写来实现多态，重写就得借助继承、接口
+		重载
+	
+	

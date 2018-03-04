@@ -1,0 +1,99 @@
+1、什么是jQuery?
+	jQuery实际上是对JavaScript的封装，包含有一整套常用的方法，比如获取元素的方法，form表单提交的方法，
+	表单验证，修改元素的属性，修改元素的样式
+	
+2、AJAX    Asynchronous JavaScript And XML
+	异常JavaScript和XML
+	
+	AJAX技术可以把表单数据提交到后台服务器，后台服务器不是返回一个网页，而是返回一个简单的消息，
+	页面接收到消息后，根据此消息把局部区域刷新
+	
+	
+3、在原始的页面中，如果一个页面区域的内容改变了，通常是整张网页都刷新，刷新整张网页本身耗网络资源，
+其他的数据有可能丢失或者重新查询数据库
+
+解决方案：能不能有一个方法，只是让需要做出修改的页面区域做修改，其他区域保持不动
+
+局部刷新，如何完成局部刷新？可以使用AJAX技术
+
+4、使用jQuery之前请在网页端加载jQuery库
+	js代码中$符号就可以使用jQuery
+	
+	<form id="form">
+		<span id="info">${requestScope.info }</span>
+		<input type="email" placeholder="请输入邮箱" />
+		<input type="password" placeholder="请输入密码" />
+		<input type="button" onclick="login();" value="登录" />
+	</form>
+	
+	function login() {
+		// 发送post请求
+		// $.post(url, data, function(data) {}, data_type);
+		// 第一个参数是提交到的后台地址
+		// 第二个参数是需要提交的数据,JSON格式
+		// 第三个参数是回调函数，由服务器返回的数据会放在此函数的参数中，参数名一般用data
+		// 第四个参数是由服务器返回的数据类型  json
+		$.post("<%=path %>/login/does",
+			$("#form").serialize(); // $("#form")   表示去获取id为form的元素    serialize()方法把form表单的数据组装成JSON格式的字符串
+			function (data) {
+				// data参数保存了由后台 返回的数据
+				// out.write("{\"key\":\"value\"}");   {"key":"value"}
+				data.key
+				$("#info").text(data.key); // 这句话只修改了id为info的标签，网页的其他内容都没有修改，局部刷新 
+			}, "json"
+		); 
+	}
+	
+5、jQuery的元素选择器
+	1）id选择器     根据id来获取元素
+		<span id="aa"></span>
+		$("#aa")   返回单个对象
+	2)类选择器    根据class样式来获取元素
+		<div class="aa"></div>
+		
+		$(".aa")  返回的是数组
+	3)标签选择器
+		<p></p>
+		$("p")   返回的是数组 
+		
+		<a></a>
+		$("a")
+		
+6、常用的方法
+	$("#a").val();   // 获取id为a的input的value
+	$("#a").val("aaa"); // 设置id为a的input的value为aaa
+	
+	$("#a").text(); // 获取id为a的元素的文本内容
+	$("#a").text("aaa"); // 修改id为a的元素的文本内容为aaa
+	
+	$("#a").attr("name"); // 获取id为a的元素的name属性
+	$("#a").attr("name", "value"); // 设置id为a的元素的name属性的值 为value
+	
+	$("#a").attr("style", "color:red;");
+	
+	$("#a").css("css样式的名称", "css样式的值"); // 添加或修改指定的样式内容
+	
+7、JS及JQuery都是基于对象的语言
+	js对象
+	
+	jQuery对象
+	
+	这两类对象是不一样的，js对象如何转化到jQuery对象？
+	var a; // a 是 js对象
+	
+	var aa = $(a); // 把js的a对象转成jquery对象
+	
+8、循环的问题
+		var divs = $("div"); // 此时返回的divs存储的是js对象的数组
+		alert(divs.length);
+		for (var i = 0; i < divs.length; i++) {
+			alert($(divs[i]).text()); // divs[i] 是 js对象  $(divs[i]) 把js对象转成jQuery对象
+		}
+		// 第一个参数index表示数组的索引 
+		// 第二个参数div表示divs数组中每次循环拿出的一个JS对象
+		$.each(divs, function (index, div) {
+			alert($(div).text()); // 把div这个js对象转化成jquery对象，然后再使用jquery对象的text()方法
+		})
+	
+	
+

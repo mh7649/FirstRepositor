@@ -1,0 +1,22 @@
+SQL Plus常用命令
+	clear清屏命令
+	exit/quit退出
+	edit打开文本编辑器并有一条命令的记录
+	host dos命令/shell命令
+	describe(desc) 查询表结构   desc table_name;
+	pause  string  新窗口显示内容并等待确认
+	set用于设置环境或系统变量
+	show用于显示环境或系统变量
+		show user查看登录用户
+	shutdown关闭数据库
+	startup启动数据库
+	@sql文件    直接执行一个完整的sql文件
+	execute 执行存储过程
+	/  用于执行缓冲区中的上一条命令
+	
+	spool 可以把指定命令获取的结果集输出到指定文件中   spool a.txt started spooling
+	spool off stoped spooling
+	
+dual系统表  哑表  一般用于做函数测试功能
+	select sysdate from dual;
+	

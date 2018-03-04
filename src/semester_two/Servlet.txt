@@ -1,0 +1,146 @@
+1、如何找到eclipse中的tomcat目录
+	工作空间->.metadata->.plugins->org.eclipse.wst.server.core->tmp0(与Eclipse集成的临时tomcat)
+	->wtpwebapps(网站项目)
+	
+	Tomcat启动时：deploy部署---wtp.deploy=网站项目的部署路径
+	
+	如果说jsp页面写错了，找到jsp页面对应的java代码
+	
+2、Servlet      jsp页面转化成的java代码就称为servlet
+	Servlet是Java程序，其实现了HTTP协议，能够接收来自于浏览器的请求，并生成响应返回到浏览器
+	
+	Serlvet是先于JSP出现的
+	
+	由Serlvet去动态地生成HTML页面，在Servlet代码中需要不停地组装html，js, css的字符串,
+	非常不便利，出错的概率的很大，可读性低，维护性低
+	JSP的出现可以很好地解决Serlvet中碰到的问题，JSP的本质就是Servlet
+	
+3、JavaEE Servlet的基本结构
+	javax.servlet.Servlet接口
+		JavaEE提供的Serlvet的规范
+			1）public void init(ServletConfig config) throws ServletException初始化一个Servlet
+			2)public void service(ServletRequest req, ServletResponse res)
+            throws ServletException, IOException做服务的方法
+            3）public void destroy()销毁的方法
+            4）public String getServletInfo()获取 Servlet的信息
+            5）public ServletConfig getServletConfig()获取servlet配置相关的信息
+	javax.servlet.ServletConfig接口
+		JavaEE提供的用于描述Servlet相关的配置信息的接口
+			1）public String getServletName()获取Serlvet的名称的方法
+			2）public ServletContext getServletContext()获取Servlet的上下文信息
+			3）public String getInitParameter(String name)获取Serlvet的初始化参数
+			4）public Enumeration<String> getInitParameterNames()获取servlet初始化的所有参数的名称
+		javax.servlet.GenericServlet
+			JavaEE对Serlvet接口和ServletConfig接口的默认实现
+				1)public void init() throws ServletException没有带参数的初始化方法
+				2）Serlvet接口和SerlvetConfig中提供方法，几乎实现了，但是service()方法没有实现
+			javax.servlet.http.HttpServlet
+				JavaEE提供的以HTTP协议实现的Servlet
+				1)常量
+					private static final String METHOD_DELETE = "DELETE";
+				    private static final String METHOD_HEAD = "HEAD";
+				    private static final String METHOD_GET = "GET"; // get请求
+				    private static final String METHOD_OPTIONS = "OPTIONS";
+				    private static final String METHOD_POST = "POST"; // post请求
+				    private static final String METHOD_PUT = "PUT";
+				    private static final String METHOD_TRACE = "TRACE";
+				    
+				***Restful API(后期会详细说明)    http://localhost:8080/index.jsp?a=test&b=hello
+											 http://localhost:8080/index/test/hello
+											 
+				2)常用的方法
+					protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+        				throws ServletException, IOException
+        				doGet用于处理get请求，HttpSerlvetRequest表示浏览器发送过来的请求对象
+        								HttpSerlvetResponse表示从服务器发送到客户端浏览器的响应对象
+        			protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        				throws ServletException, IOException
+        				doPost用于处理post请求
+        				
+        			protected void service(HttpServletRequest req, HttpServletResponse resp)
+        				throws ServletException, IOException
+        				任何一种请求都可以处理。源代码会对请求方法进行判断，如果是get请求，则调用doGet()方法，如果是post请求，则调用doPost()方法
+        			
+        			public void service(ServletRequest req, ServletResponse res)
+        				throws ServletException, IOException
+        				与上面这个方法的区别在于参数的不同，这个方法的参数没有明确指明请求与响应是http协议。
+        				为了不出现强制把ServletRequest req转化成HttpSerlvetRequest，请使用上面的service方法
+	
+5、状态码
+	200
+	404
+	500内部服务器错误（配置文件出错，Java代码出错了）	
+	
+6、如何自定义一个Servlet，并且配置Serlvet
+	1)创建Class类，继承自javax.servlet.http.HttpSerlvet
+	2)重写doGet或doPost（可以直接重写service方法）
+	3)在方法内部写处理http请求的代码
+	
+	4）找到WEB-INF目录下的web.xml文件
+	5）告诉tomcat web容器有一个servlet
+		<servlet>
+			<servlet-name>Servlet的简单类名</servlet-name>
+			<servlet-class>Servlet类的全限定名</servlet-class>
+		</serlvet>
+	6）告诉tomcat web容器通过哪个 url可以访问到指定的serlvet
+		<servlet-mapping>
+			<serlvet-name>引用上面第五步的serlvet-name的配置</servlet-name>
+			<url-pattern>/</url-pattern>
+		</servlet-mapping>
+	7)Run As---->Run on Server
+	8)在浏览器中通过第6步中配置的url-pattern去访问指定的Serlvet
+	
+	注意：任何一个需要被使用的Serlvet都必须进行上面的配置，一个servlet一定对应一个<servlet>标记和一个<servlet-mapping>
+
+7、如何解决乱码
+	1).<meta charset="utf-8" />
+	2).HttpSerlvetResponse  setCharacterEncoding("utf-8"); // 设置响应以何种编码输出内容
+	3).resp.setContentType("text/html;charset=utf-8");  // 设置文档类型
+	4)、jsp的page指定中的contentType="text/html;charset=utf-8" pageEncoding="utf-8"
+		<meta charset="utf-8" />
+	5)HttpServletRequest setCharacterEncoding("utf-8")
+
+8、form表单
+	method为请求方法，post
+	action为请求URL，把表单中的数据提交到哪个 URL。如果此URL与某个servlet关联在一起，则把表单数据提交到指定的servlet
+	
+	如何获取到由页面提交的数据：
+	不过是get请求还是post请求都是；HttpServletRequest String getParameter(String name); 
+	
+	如果form表单中没有填写数据的字段，在后台获取到的是空字符串
+
+9、Servlet的生命周期
+	1)构造方法
+	2）init(ServletConfig config);进行初始化， ServletConfig参数由WEB容器传递过来
+	3）service(HttpServletRequest, HttpServletResponse);做服务，Request与Response参数也是由WEB容器传递过来的
+	
+	4）在Tomcat容器要关闭的时候，项目从tomcat移除掉，或者长期没使用，destory();销毁Servlet	
+	
+	一个servlet只会在第一次请求的时候初始化，并执行service方法。从第二次开始，每个请求不需要再次初始化servlet
+	每一个请求都由Tomcat容器创建一个新的线程来执行
+
+10、Servlet的初始化参数
+	ServletConfig接口描述Servlet的配置信息，包括Servlet初始化参数
+	
+	1)如何配置初始化参数：
+		在web.xml文件的
+		<servlet>
+			<servlet-name></servlet-name>
+			<servlet-class></servlet-class>
+			<init-param>
+				<param-name></param-name>
+				<param-value></param-value>
+			</init-param>
+		</servlet>
+	2)在Servlet中获取初始化参数
+		init(ServletConfig config) {
+			config.getInitParameter(param_name);
+		}
+		
+11、HttpServletRequest, HttpServletResponse分别对应于Http的请求与响应
+	由WEB容器把HTTP请求封装到HttpServletRequest中
+	由WEB容器把HTTP响应封装到HttpServletResponse中
+	
+12、显示中文的编码：GB2312, GB18030, GBK, BIG5, UTF-8
+	
+	

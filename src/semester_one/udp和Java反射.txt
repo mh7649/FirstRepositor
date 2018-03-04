@@ -1,0 +1,41 @@
+1、UDP编程
+	User Datagrame Protocal,用户数据报协议
+	TCP/IP，传输控制协议，网际协议
+	
+	TCP基于三次握手的可靠连接，长连接，传输数据的大小无限制
+	UDP不是可靠的连接，有可能数据丢失，不是长连接，数据有限制，最大为64K
+	
+	请参考udp编程.png
+
+2、Java反射
+	概念：用一个特殊的类来描述其他任何一个类，这个特殊的类可以描述出其他类中有哪些方法，哪些成员变量
+	
+	java.lang.Class是JDK提供的专门用于描述其他类的一个类
+	
+	第一次使用：Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+	
+	类装载器（ClassLoader）：JVM提供的能够识别并处理一个类的区域
+	加载（load）：把一个类放入到类装载器
+	
+	一个类装载到类装载器后，jvm虚拟机会用Class类来描述所加载的这个类
+	
+	什么时候创建的Class：当一个类加载到类装载器的时候，JVM虚拟机就会创建Class类
+	
+	为什么要这么做？
+		可以借助Class类来确定一个类有什么样的方法和变量
+		
+	如何获取到Class类的实例：
+		1、对象.getClass();
+		2、类.class
+		3、Class.forName("类的全限定名")
+	
+	
+	Declared  声明了的
+	Field   属性
+	
+
+4、java.lang.reflect.Field类用于描述类中的属性
+	java.lang.reflect.Method类用于描述类中的方法
+	java.lang.reflect.Constructor类用于描述类中的构造 方法s
+	
+	

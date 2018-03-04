@@ -1,0 +1,128 @@
+1、EL 表达式语言
+	Expression Language
+	${表达式}
+	
+	表达式的形式：
+	1） 10 == 10， 10 >= 20    没有使用变量
+	2）${name } 此时的name不是直接一个普通 的变量，而是放在pageContext,request, session, application中
+	的属性的名称
+	
+	3）pageContext, request, session, application
+	${name }自动按照上面所写的顺序来查找是否有此属性，只要在其中一个作用域内找到了此属性，则直接使用，如果没有找到，则继续
+	到大范围的作用域内找。如果找不到，则输出空字符串
+	
+	4）指定在某个作用域内查找属性
+		pageContext   pageScope
+		request       requestScope
+		session 	  sessionScope
+		application   applicationScope
+		
+	5)el表达式可以直接获取请求参数
+		获取单个数据的请求参数${param.name }
+		获取多个数据的请求参数${paramValues.name }
+		
+	6)特殊的运算符
+		== eq
+		!= ne
+		>= ge
+		<= le
+		> gt
+		< lt
+		/ div
+		% mod
+		
+		
+		instanceof
+		true
+		false
+		null
+		
+		empty  如果说对象为null，则返回true，内容为空，返回true
+		
+		&& and
+		|| or
+		! not
+	
+2、JSTL JavaServer Pages Standard Tag Library Java标准标签库
+	JCP组织制定的一个规范，使用标签替换原先出现在JSP中的Java代码
+	
+	**核心标签库c
+	**格式化标签库fmt
+	函数标签库fun(XX)
+	数据库标签库sql(XX)
+	处理xml文件的标签库（XX）
+
+	引入以下两个jar文件
+	jstl.jar
+	standard.jar
+	
+	1）必须 使用taglib指令把标签库引入到jsp页面
+		<%@ taglib prefix="前缀" uri="统一资源标识符"
+		
+		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" />
+		
+	2）<c:out value="test" />
+		value=""这里既可以直接使用一个值 ，也可以使用<%= %>引用页面中的某个变量，
+		${name }
+		
+		直接可以使用el表达式输出，而没必要再次使用<c:out />标签
+		
+	*****3)<c:if test="${ }">
+			如果条件成立，则会输出这里的内容
+			html标签
+		</c:if>
+		
+	******4)<c:choose>
+			<c:when test="${}"></c:when>
+			<c:when test="${}"></c:when>
+			<c:otherwise></c:otherwise>
+		</c:choose>
+	5)<c:set value="" var="" scope=""/>
+		  定义一个字符串，放到指定的作用域内
+	  
+	  <c:set target="使用一个已经定义好的JavaBean变量" property="JavaBean的属性" value="属性值"
+	  	scope="" />
+	  	去修改已经有的JavaBean对象的属性，不能加var
+	****6)<c:forEach items="数组，list,map,Iterator, set" var="变量名" begin="开始位置，默认为0" end="结束位置，默认为最后那个索引"
+				step="增量" varStatus="status">
+			</c:forEach>	
+		status.index   索引 从0开始
+		status.count   计数 从1开始
+	7)<c:catch var="异常对象">
+		<%如果此处的代码产生了异常，则把异常信息放在Var定义的变量里%>
+	</c:catch>
+	${异常变量.message}
+	
+	8)<c:import url="form.jsp">
+		<c:param name="" value=""></c:param> //用来传递参数
+		</c:import>
+		动态包含文件
+		
+		如何获取参数：request.getParameter(name);
+		
+	9)<c:redirect url="form.jsp"></c:redirect>
+	重定向到指定的url
+	
+	10)<c:remove var="user" scope="session"/>
+		从指定的作用域内移除指定的属性
+		
+	11)<c:url value="/form.jsp" /> 
+		如果以/开头，则可以获取到应用上下文路径
+		与之前 的<%=path %>的方法可以互相替换
+		
+	12)<c:forTokens items="包含有某个特殊符号的字符串" delims="特殊符号" var="a">
+		${a }
+	</c:forTokens>
+	
+	类似于String类的split方法
+	
+	
+	13)<fmt:formatDate value="Date对象的变量" pattern="yyyy-MM-dd HH:mm:ss" />
+		把日期按照指定的格式格式化成字符串
+		
+	14）<fmt:parseDate value="时间格式的字符串" pattern="yyyy-MM-dd HH:mm:ss" var="date"/>
+		把字符串按照指定的格式转化成Date对象
+		
+	15）<fmt:formatNumber value="1000000" />
+		自动按三位分割
+	

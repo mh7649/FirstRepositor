@@ -1,0 +1,111 @@
+1、什么是集合
+	通常情况下 ，把具有相同性质的一类东西，汇聚成一个整体，就可以称为集合。
+ 
+2、什么是集合框架
+	集合框架是为表示和操作集合而规定的一种统一的标准的体系结构。
+	任何集合框架都包含三大块内容：对外的接口、接口的实现和对集合运算的算法
+	
+3、集合框架的结构(任何一个集合框架的类都只能存储引用数据类型，不能存储基本数据类型)
+	java.util.Collection是集合框架的接口
+		Collection 层次结构 中的根接口。
+		Collection 表示一组对象，这些对象也称为 collection 的元素。
+		一些 collection 允许有重复的元素，而另一些则不允许。
+		一些 collection 是有序的，而另一些则是无序的
+		java.util.Queue接口，表示单向队列，先进先出
+				java.util.Deque接口，表示双向队列
+		java.util.List接口，表示一个有序（顺序）的列表，允许重复的元素
+				java.util.Vector实现类，表示一个有序（顺序）的列表，允许重复元素，与ArrayList几乎一样
+							java.util.Stack实现类，表示一个栈，先进后出来
+				*******java.util.ArrayList实现类，表示一个有序（顺序）的列表，允许重复的元素
+		*******java.util.Set接口，表示一个无序的不允许重复元素出现的集合
+				java.util.HashSet实现类，根据对象的哈希码计算出此对象应该放在HashSet的哪个位置上
+				java.util.TreeSet，树实现的Set结构
+		java.util.SortedSet接口，按元素的自然顺序排序的Set集合
+		
+		java.util.LinkedList表示一个链式结构的列表
+		
+		********java.util.Map接口，表示一个键值对（key-value）的映射结构，通过一个唯一的键找到与之对应的值
+		java.util.HashMap，根据哈希码来存储的键值对结构
+		java.util.HashTable，与HashMap几乎一样
+		java.util.Properties类，表示与properties配置文件相关的类
+		
+4、JUnit测试(单元测试)
+	1)写一个类
+	2）写方法，以@Test开头，方法的名称必须以test开头
+	@Test
+	public void testAdd() {
+	}
+	3）在此方法上点击鼠标右键，Run As--->Junit Test
+	
+5、java.util.ArrayDeque 
+	顺序存储
+	1)添加元素
+		add(Object obj);添加元素至队尾
+		addFirst(Object obj) 往队的头部添加
+		addLast(Object obj) 往队的尾部添加
+	2）移除元素
+		poll();从队的头部获取并移除元素
+	3）判断是否为空
+		isEmpty();如果空，返回true，否则false
+	4）获取长度
+		size();获取长度
+	5）检索元素
+		5.1)判断是否包含某个元素contains(Object obj)，如果包含返回true，否则返回false
+		5.2)
+		
+	6）其他方法 
+		peek()从队的头部获取元素但不移除元素
+		
+6、java.util.ArrayList  java.util.LinkedList  java.util.Vector类  java.util.Stack（都是顺序存储）
+	方法是一样的，功能几乎一致
+	区别：ArrayList是非线程安全的，性能更好，Vector是线程安全的，性能更差
+	如果一个程序运行在多个线程的环境下，应该选择Vector
+	
+	LinkedList与ArrayList一样，只不过是存储结构不一样，前者是链式结构，后者是线性结构
+	
+	参考ArrayListTest.java类和VectorTest.java类
+	
+7、对于任何一个集合框架，如果要判断是否包含有某个对象，则此对象的类一定要重写equals方法
+
+8、java.util.HashSet类
+	1）不是顺序存储（根据对象的hashcode判定存储在哪个位置上）
+	2）不能有重复元素（已经添加了A，再次添加A的时候，会把已经添加的覆盖掉）
+	3)直接使用foreach遍历set结构
+	
+9、java.util.TreeSet类
+	如果需要正常的使用TreeSet，则放在TreeSet内的对象需要能够比较。
+	如果是自定义的类，则此类需要实现Comaprable接口，用于表示当前类的对象与类的另外一个对象进行比较。
+	具体请参考User.java类里的compareTo方法
+	
+10、java.util.HashMap类  java.util.Hashtable类
+	key-value的映射结构
+	
+	一个key-value的映射组成一个Entry，多个Entry组成一个Map。Entry请参考IteratorTest.java类
+	
+	Hashtable与HashMap的方法一样，功能也一样
+	区别：HashMap是非线程安全的，性能更高，Hashtable是线程安全的，性能更差
+	如果是在多线程环境下，则使用Hashtable
+	
+11、properties文件
+	1）以.properties作为后缀
+	2）key-value结构的文件，一个key=value后换行
+	
+	一般用来作配置文件
+	properties只支持英文，如果要使用中文，则必须使用中文的unicode编码,\u开头
+	
+	jdk提供了一个java.util.Properties类与properties配置文件相对应
+	
+	
+12、类的补充：
+	静态代码块>动态代码块>构造方法
+	
+	父类的静态代码块>子类的静态代码块>父类的动态代码块>父类的构造方法>子类的动态代码块>子类的构造方法
+		
+13、java.util.ArrayList初始化大小为10， 增长因子为1，2倍
+		java.util.Vector初始化大小为10，增长因子为0.5，1.5倍
+		java.util.Stack初始化大小为10，增长因子为0.5，1.5倍
+		java.util.HashMap初始化大小 1 << 4   = 16（2的4次方）,  最大容量1 << 30, 2的30次方，增长因子0.75， 1.75倍
+		java.util.Hashtable初始化大小 11，  增长因子0.75， 1.75倍
+		java.util.HashSet初始化大小 16，增长因子1， 2倍
+		 
+		

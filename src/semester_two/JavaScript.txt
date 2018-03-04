@@ -1,0 +1,189 @@
+1、JavaScript脚本语言
+	一段程序代码嵌入到其他文件中，脚本语言通常借助于解释器逐行解释执行
+	
+	HTML， CSS3(简单的动画效果)，JavaScript
+	JS提供了很多函数，比如数学函数，时间日期函数，数组，整数，字符串。
+	JS是一门弱类型语言：在声明一个变量的时候不必要指明这个变量是什么数据类型。var  (variable 中文：变量)
+	JS可以对HTML DOM元素进行操作，可以修改DOM树中任何一个节点的属性，样式，值。添加节点，删除节点
+	
+2、DOM树
+	Document Object Model(文档对象模型)
+	<html>
+		<head></head>
+		<body></body>
+	</html>
+	
+3、如果要让JS正常运行，则必须借助解释器，用网页浏览器能够解释JS脚本。
+	任何一个网页浏览器都有一个JavaScript引擎。任何JavaScript引擎都可能不一样的实现，兼容性问题
+	如果要解决兼容性问题：同一个功能可能 需要写不同的JS（jQuery库，js的封装，具有良好的兼容性）
+	
+	js脚本必须加载到html网页中
+	
+4、如何在HTML页面中使用JS
+	1)内部脚本：在head标签内部增加<script></script>
+		把JS的代码放到<script></script>
+	2)外部脚本：
+		a、写一个包含有JS代码的文件，后缀名为.js
+		b、在head标签内部增加<script></script>
+		c、<script src="js文件的路径"></script>
+		
+5、JS的基本语法
+	1）如何注释，单行注释//，多行注释/**/
+	2）如何输出：alert("")在网页上弹出一个警告框    对于js来说，不管是单个字符还是字符串都可以用""和''来使用
+	3）js可以不用;结尾
+	4)变量，命名规则与Java一样: 声明var a;   定义var a = 100; var b = 'a'; var c = 10.5;
+		如果是字符串+其他类型：都是做字符串的拼接操作
+		
+		数据分为：number数字类型, string字符串类型, boolean类型, undefined类型, object对象类型
+	5)数组的使用（object类型）
+		var myary = new Array("", "");
+	
+		var myary = new Array();
+		myary[0] = 100;
+		同一个数组能够放多种类型的数据
+		
+		通过数组的length属性获取长度
+		
+		不存在数组越界，如果超出界限，则此位置上的值是undefined
+	6）document.write("")在网页上输出内容，如果要换行不能使用\n，必须使用网页能够识别<br />
+		document表示整个网页的文档对象
+		
+	7)for， while, do...while，switch...case都与Java一致
+		switch...case也能对字符串进行判断 
+		
+	8）运行符，优先级与Java一样
+	
+	9)for...in...   获取到的值是数组的索引 
+		var array = new Array(1, 2, 3);
+		for (var i in array) { // 此处的i为索引
+			alert(array[i]);
+		}
+		
+		var array = new Array();
+		array['key1'] = "value1";
+		array['key2'] = 'value2';
+		for （var key in array) { // 此处的key为健
+			alert(array['key']);
+		}
+		
+	10)JS函数
+		funtion funName(param1, param2) {
+			return "";
+		}
+		1)任何函数都以function开头
+		2)任何函数不需要写返回值类型
+		3)任何函数的参数不需要写类型，也不需要var, 直接写参数名称
+		4)如果有返回值，函数最后添加 return语句
+		
+6、基本函数
+	1）parseInt  把整数型字符串转化成整数数字，带有小数点的话，也只取整数部分
+	2）parseFloat   把字符串转化成带有小数点的数字。如果小数点后只有0，自动去掉
+	3）isNaN(is Not a Number)  判断是否为数字 .   如果是一个可以转化成数字的字符串，返回值 是False
+	4）eval()    可以把字符串转化成JSON对象
+	5）var a = setInterval(“test()”, 毫秒值)   指定的时间间隔执行什么事情    来源于window窗口对象
+		clearInterval(a); // 取消计时器
+		var b = setTimeout("test()", 毫秒值);  在指定的时间后再执行
+		clearTimeout(b);  停止计时器
+	6）escape("特殊符号，如&，空格") 特殊符号转成化%开头的形式
+		unescpae()与上面的函数的过程相反
+	
+7、this
+	this用于描述一个对象自身
+	<a onclick="this.innerHTML = ''"></a>   此时的this就表示a 标签对象   （此方法用得比较少，只有很少代码的时候会用）
+	<a onclick="test(this)"></a>    this表示当前的a标签对象，把此对象作为参数传递给test方法
+
+8、new关键字
+	用法与java中的构造方法很像
+		function car(b, p) {
+			this.brand = b;
+			this.price = p;
+		}
+		不需要单独声明属性，在this后面的默认为属性
+		var c = new car("bmw", 100);
+		alert(c.brand);
+		alert(c.price);
+		
+9、with语句用于执行一组语句，所有这些语句都假定引用指定的对象
+	function car(brand, price) {
+			this.brand = brand;
+			this.price = price;
+		}
+		var c = new car("bmw", 1000000);
+		alert(c.brand);
+		alert(c.price);
+		with(c) {
+			alert(brand); // 此处的两个属性都来源于with所指定的c对象
+			alert(price);
+		}
+		
+10、JS对象区分大小写
+	Array数组对象
+	String字符串对象
+		length属性,获取字符串的长度
+		方法及说明请参考string.html
+	Date时间日期对象
+	Math数学函数对象
+	
+	document文档对象
+	window窗口对象
+		
+6、事件机制
+	1)onclick点击事件
+	2)onfocus获得焦点事件
+	3)onblur失去焦点事件
+	4）onchange改变事件   当文本框失去焦点，且值 有改变的时候触发此事件
+	5)onload文档载入事件，整个网页被加载完毕
+	6）onmouseover鼠标经过事件
+		onmouseenter鼠标进入事件
+		onmouseout鼠标移出事件
+	7)onsubmit表单提交事件	
+		提交：把form表单中的数据通过网络传输到远程服务器上
+		
+			表单提交的时候会把input, select ,checkbox, radio, textarea的值通过url的形式提交到远程服务器
+			查询字符串：?name=value&name1=value1&name2=value2
+	
+7、document
+	***getElementById()
+	getElementByTagName()
+	getElementByName()
+	createElement()
+	write()
+	writeln()
+	
+8、window
+	alert();
+	confirm();
+	prompt();
+	window.open();
+	window.scrollTo(var x, var y); // 可以实现回到顶部的功能
+
+9、location
+	location.href
+	***location.href = "url";
+	
+10、history
+	back()
+	forward()
+	go();参数为正数forward,参数为负数 back
+
+11、URL  URI
+	Uniform Resource Location 统一资源定位符    网页地址
+	Uniform Resource Identifier   统一资源标识符   唯一的名称来标识网络中的一个资源 
+	
+12、html
+	> &gt;  greater than
+	< &lt;   lower than
+	>= &ge;   greater equal
+	<= &le;   lower equal
+	空格   &nbsp;
+	&     &amp;
+	版权符号   &copy;
+	
+13、在对select中的所有option所组成的数组进行循环的过程中，不能对option进行操作
+
+	var opts = select.options;
+	for (var i = 0, len = opts.length; i < len; i++) {
+		// 不能把opts[i]从select中移除，也不能把opts[i]添加到其他 select中
+	}
+
+	如果同一个option在两个select中，第二个select要添加这个opt，则第一个select会自动删除此opt

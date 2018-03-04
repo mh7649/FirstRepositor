@@ -1,0 +1,102 @@
+1、什么是前端框架？
+	提供了一系列的css样式和常用的js插件以及布局方案
+	
+	bootstrap    Twitter    www.bootcss.com
+	
+	purecss
+	
+	amazeui
+	
+2、Bootstrap	
+	电脑屏幕 1366 * 768   1920 * 1080    屏幕大小不一样
+	平板电脑 1280 * 800   2048×1536
+	手机800 * 400  1920 * 1080   1334 * 750
+	
+	屏幕自适应，自适应网页：同一个网页可以同时适配电脑屏幕，平板屏幕，手机屏幕，不需要单独写针对某个屏幕的网页
+	
+	兼容性好，可以完善兼容ie8及以上，firefox, chrome, safari, opera
+	
+3、CSS3
+	viewport 视口   用于判断屏幕的大小
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+	width=device-width   整个网页的宽度等于设备的屏幕宽度
+	initial-scale=1              初始化的屏幕的放大比例
+	maximum-scale=1             屏幕支持的最大绽放比例
+	user-scalable=no    让用户不要缩放网页
+	
+	
+	media 媒体查询  以屏幕大小来区分不同的媒体   超小屏幕  小屏幕  中等屏幕  大屏幕
+	
+	超小屏幕：<768px
+	小屏幕：>=768px && < 992px
+	中等屏幕： >= 992px && < 1200px
+	大屏幕： >= 1200px
+	
+	@media用于css文件中判断屏幕大小，当屏幕大小在指定的范围内，则使用此范围内的样式
+	
+	/* 小屏幕（平板，大于等于 768px） */
+	@media (min-width: 768px) {
+		// 如果屏幕小于768px，则使用此处的css样式
+	}
+	
+	/* 中等屏幕（桌面显示器，大于等于 992px） */
+	@media (min-width: 992px) {
+		// 如果屏幕小于992px，并且大于等于768px，则使用此处的css样式
+	}
+	
+	/* 大屏幕（大桌面显示器，大于等于 1200px） */
+	@media (min-width: 1200px) {
+		// 如果屏幕大于1200px，则使用此处的css样式
+	}
+	
+4、什么是CDN？
+	CDN: Content Distribution Network   内容分发网络 
+	常用的css,js
+	图片，视频等直接放到一个服务器上，这台服务器专门为其他网络服务器提供这些内容
+	
+	七牛云存储，又拍云存储， ucloud
+	
+5、栅格系统
+	电脑屏幕宽度大小为1366px
+	手机屏幕宽度大小为960px
+	
+	把整个屏幕宽度平均分成12等份，每个等份的大小是一样的         1366 / 12   100px    960 / 12 80px
+	
+	接着只需要指定html标签在屏幕中占用了多少个等份
+	
+	div    2个等份    电脑    2 * 100 = 200px
+				手机   2 * 80 = 160px
+				平板   2 * 120 = 240px
+				
+	
+	css样式：
+	col-lg-1, col-lg-2, col-lg-3,..... col-lg-12
+	col-md-1, col-md-2, col-md-3,..... col-md-12
+	col-sm-1, col-sm-2, col-sm-3,..... col-sm-12
+	col-xs-1, col-xs-2, col-xs-3,..... col-xs-12
+	
+	body -> 多个container -> 多个row -> 多个col
+	
+6、语义
+	浏览器或者爬虫通过对标签的解析就知道这些文本是说明什么东西的
+	
+7、bootstrap用颜色来区域不同的状态
+	active
+	success
+	warning
+	danger
+	info
+	
+8、常用的后台管理模板
+	hAdmin
+	h+
+	Metronic
+	
+	Bootswatch主题包
+	
+	
+	
+	
+	
+	

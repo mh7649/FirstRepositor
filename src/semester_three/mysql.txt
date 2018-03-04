@@ -1,0 +1,13 @@
+mysql -uroot -p
+ ‰»Î√‹¬Î
+
+show databases;
+
+use database;
+
+show tables;
+
+desc table;
+
+com.mysql.jdbc.Driver
+jdbc:mysql://localhost:3306/d_test?useUnicode=true&characterEncoding=utf-8

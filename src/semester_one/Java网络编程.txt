@@ -1,0 +1,79 @@
+1、协议
+	http://baidu.com/
+	
+	协议部分：http://
+			baidu.com 域名
+			
+	为了客户端与服务端如何进行数据交互，包含了数据的格式
+	
+	Request(请求), 从客户发送数据到服务端，请求头部 Request Header:   http    1.1      get/post
+	Response（响应）,从服务返回的数据（网页），响应头部 Response Header:    content-type   content-length     server
+	
+	协议就是规定了一套数据交换的格式
+	
+	
+2、HTML(Hyper Text Markup Language)超文本标记语言
+	
+	HTTP：Hyper Text Transfer Protocol超文本传输协议，专门负责把远程服务器上的网页传输到客户端浏览器
+	
+	HTTP协议是基于TCP/IP协议
+	
+3、TCP: Transfer Control Protocol 传输控制协议， 完成对数据的传输功能
+	IP： Internet Protocol网际协议 ， 确定互联网上的唯一的计算机
+	UDP: User Datagram Protocol用户数据报协议，也是数据的传输
+	
+	TCP与UDP的区别：
+	TCP是传输控制协议，基于三次握手原理（客户端与服务端进行三次确认），是可靠的传输
+	UDP是用户数据报协议，是不可靠的传输	
+	
+4、Socket编程(是基于TCP/IP协议的， UDP协议)
+	Socket 套接字  IP地址:端口号
+	
+	1)IP地址：确定唯一的一台计算机
+	2)端口：用来确定一台计算机上的唯一的一个程序，同一个程序可以占用多个端口，同一个端口只能指向一个程序
+		65536个端口：0-65535，0-1023号端口系统保留的端口号，不要在自定义的程序中使用这些保留的端口号，从1024-65535，在我们的自定义程序中可以随便使用
+		http: 80
+		ftp(文件传输协议): 21
+		smtp（简单邮件传输协议）:25
+		tomcat（JavaWEB容器）:8080
+		SQLServer:1433
+		MySQL:1366
+		Oracle:
+		
+		请自己整理一下常见的端口号
+		
+5、端口的监听
+	开启一个程序，此程序使用Socket去绑定到指定的端口，此程序在监听这个端口
+	
+	服务端在监听一个端口：在等待客户端的连接
+		
+6、java.net.ServerSocket，表示服务端的Socket
+
+	java.net.Socket，表示客户端与服务端建立的连接
+	
+	
+	1）建立服务端，监听指定端口ServerSocket ss = new ServerSocket(int port);
+	2）等待客户端连接 Socket socket = ss.accept();
+	3)服务端已经有客户端连接上后可以做其他的事情
+	
+		实例：服务端一旦有客户端连接上，则发送“你好，客户端”到客户端
+		
+		socket.getOutputStream(); // 获取往客户端写数据的输出流
+		
+		socket.getInputStraem(); // 获取从客户端读数据的输入流
+	
+	1）建立客户端，通过指定的ip和端口号连接到服务端  Socket s = new Socket(String ip, int port);
+	2)客户端与服务端连接完可做其他的事情
+		
+		实例：客户端一旦连接上了服务端，则发送“你好，服务端”到服务端
+		
+		s.getInputStream(); // 获取从服务端读数据的输入流
+		s.getOutputStream(); // 获取往服务端写数据的输出流
+		
+		
+		一方的管道出来，另一方的管道进来
+		
+7、Java IO, Java NIO
+		
+		
+		

@@ -1,0 +1,60 @@
+1、JSP作为MVC模式中的View视图
+	1）用于显示用户输入的组件
+	2）把后台处理好的数据显示给用户
+	
+2、Servlet作为MVC模式中的Controller控制器
+	1）获取JSP页面中由用户提交的数据，再把数据转交给Service
+	2）由后台获取的数据转交给Service处理，处理完后把数据转交给Controller，Controller此时
+		确定把数据显示到哪个视图
+		
+3、Service及DAO作为MVC里的Model模型
+
+4、如何让一个Servlet支持多个逻辑功能
+	1）每一个URL的访问都 对应 于一个URI，此URI不包括查询字符串部分
+		让uri的最后一个斜杆后的字符串不一样，用此字符串来标识出哪个方法
+		请参考WebUtil类getURIMethod方法
+	2）servlet-mapping
+		url-pattern   /user/*    *号部分可以匹配任何一个字符串
+	3）当URL最后一个部分有输入，则可以在Servlet中去调用相应的方法
+	
+5、重复提交的问题	
+	把数据提交到一个url，提交完后，由于是转发到指定的一个页面，url地址栏没有变化，在浏览器再次刷新，则出现重复提交表单的提示
+	
+	解决重复提交的问题：提交完后，不要转发到指定的页面，而应该改用重定向
+	
+6、RestFul API
+	1）去除查询字符串
+	2）把参数直接用/分割
+	3）利于SEO优化（搜索引擎优化）：页面静态化，keywords，description, title
+	
+7、Session的使用场景
+	1）用户登录，要把用户数据保存到session中，在其他页面中，可以直接读取到session中保存的数据
+	2）购物车例子，把加入到购物车的商品以List列表存储的形式放到session
+	
+8、一个项目的设计及流程
+	基于MVC模式来做
+	1)从页面端获取数据并处理完后保存到数据库
+	jsp视图--------->servlet控制器-------->service-------->DAO-----DB
+	2)从数据库里拿数据并处理完后把数据显示到客户端页面
+	DB------->DAO-------->Service------->servlet控制器------->jsp视图
+	
+9、	Servlet操作Session和Application对象
+	HttpSession session = req.getSession();
+		setAttribute();
+		getAttribute();
+		removeAttribute();
+	
+	ServletContext application = req.getServletContext();
+		setAttribute();
+		getAttribute();
+		removeAttribute();
+		
+10、request，session, application都能把数据从后台传递到前端JSP页面
+	1)如果说这个数据是一个用户的多个页面都要访问，则此数据应该通过session存储
+	2）如果说这个数据是所有用户的页面都要访问，则此数据应该通过application存储
+	3）如果说这个数据不符合上面的两种情况，通通采用request对象
+		从一个页面或者一个Servlet到别外一个页面的数据传递，并且使用转发的方式， 不能使用重定向，因为使用了重定向后，request数据就丢掉了
+		
+	
+	
+	

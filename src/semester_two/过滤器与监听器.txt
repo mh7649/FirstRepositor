@@ -1,0 +1,91 @@
+1、过滤器
+	在JavaWEB中，过滤器是在执行servlet前或显示jsp之前先执行的一个对象
+	
+	必须实现javax.servlet.Filter接口
+		init(FilterConfig)
+		doFilter(ServletRequest, ServletResponse, FilterChain)
+		destroy()
+		
+	生命周期：
+		init初始化，在tomcat启动的时候，配置好的过滤器都会初始化（初始化一次）
+		doFilter做过滤，当访问由此过滤器过滤的url的时候执行
+		destroy销毁，当tomcat等web容器关闭的时候执行
+		
+	FilterChain对象：把过滤往下传递，后面的有可能是过滤器，也有可能是servlet
+	如果下一个是过滤器，则下一个过滤器进行过滤操作，如果下一个是servlet，则执行访问的url的逻辑 
+	
+	由多个过滤器所组成的称之为过滤器链，此过滤器链中的过滤器执行的顺序按照在web.xml文件中配置出现的顺序来。
+	配置在前面的先执行，配置在后面的后执行。
+	
+	过滤器链要能够正常传递下去，在doFilter方法中必须使用FilterChain对象的doFilter方法
+	
+	FilterConfig对象，用于获取配置在Filter中的初始化参数
+	getInitParameter(String name)
+	
+	前置方法：在调用doFilter()传递到下一个过滤器前面写的代码
+	后置方法：在执行完servlet的逻辑后由filter的逆向顺序执行doFilter后的代码
+	
+	写法：
+		1）编写一个类，实现javax.serlvet.Filter接口
+		2）告诉web容器，有一个过滤器
+			<filter>
+				<filter-name></filter-name>
+				<filter-class></filter-class>
+			</filter>
+		3）配置filter过滤的url
+			<filter-mapping>
+				<filer-name></filter>
+				<servlet-name><servlet-name>  只过滤指定的servlet，可以使用多个此标签配置多个servlet
+				<url-pattern></url-pattern>   过滤指定的url，可以使用通配符，并且也可以配置多个此标签
+			</filter-mapping>
+			
+2、监听器
+	1）javax.servlet.ServletContextListener   Servlet上下文监听器
+		 监听整个应用程序的初始化：
+		 	public void contextInitialized(ServletContextEvent sce)
+		 	sce.getServletContext()获取应用程序上下文
+		 监听整个应用程序的销毁	
+		 	public void contextDestroyed(ServletContextEvent sce)
+	2）javax.servlet.ServletContextAttributeListener   Servlet上下文属性的监听器
+		监听属性的添加
+			public void attributeAdded(ServletContextAttributeEvent scae) 
+		监听属性的移除
+			public void attributeRemoved(ServletContextAttributeEvent scae)
+		监听属性的替换
+			public void attributeReplaced(ServletContextAttributeEvent scae)
+	
+	3）javax.servlet.http.HttpSessionListener    Session的监听器
+		监听会话的创建
+			public void sessionCreated(HttpSessionEvent se)
+		监听会话的销毁
+			public void sessionDestroyed(HttpSessionEvent se)
+			
+	4）javax.servlet.http.HttpSessionAttributeListener  Session的属性监听器
+		监听属性的添加 
+			public void attributeAdded(HttpSessionBindingEvent se)
+				se.getSession();
+		监听属性的移除
+			public void attributeRemoved(HttpSessionBindingEvent se)
+		监听属性的替换
+			public void attributeReplaced(HttpSessionBindingEvent se)
+	5）javax.servlet.http.HttpSessionBindingListener     当一个对象添加到session的属性的时候的触发
+			自定义的对象类需要实现这个接口，把实现了此接口的对象添加到session或从session移除的时候会触发
+		绑定
+			public void valueBound(HttpSessionBindingEvent event)
+		解除绑定
+			public void valueUnbound(HttpSessionBindingEvent event)
+	
+	6）javax.servlet.ServletRequestListener   Request监听器
+		监听请求的创建
+			public void requestInitialized (ServletRequestEvent sre)
+		监听请求的销毁
+			 public void requestDestroyed (ServletRequestEvent sre)
+			 
+	7）javax.servlet.ServletRequestAttributeListener   Request的属性监听器
+		监听属性的添加 
+			 public void attributeAdded(ServletRequestAttributeEvent srae)
+			 	srae.getServletRequest()获取请求对象
+		监听属性的移除
+			public void attributeRemoved(ServletRequestAttributeEvent srae)
+		监听属性的替换
+			public void attributeReplaced(ServletRequestAttributeEvent srae)

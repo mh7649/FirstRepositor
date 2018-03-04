@@ -1,0 +1,88 @@
+一个jsp页面可以由html代码，java程序片断，jsp标签
+
+1、JSP的基本标签
+	1)<% %>
+		可以写Java代码，单行注释，多行注释
+		如果定义了变量，则此变量为局部变量
+		可以直接使用JSP的内置对象
+		这部分的代码最终直接放在jsp对应的servlet类的_jspService方法内，不能在此标签内写
+		java方法，但是可以写局部内部类
+		
+	2)<%! %>
+		可以写Java代码，单行注释，多行注释
+		如果定义了变量，则为成员变量，所有访问此jsp页面的用户共享此变量
+		如果定义了方法，则为成员方法
+		这里的方法不能直接使用JSP的内置对象
+		
+	3)<%= %>    =后面的变量或方法直接放在out.write()或者out.print()的参数部分
+		如果=后添加的是变量，则直接输出变量的值
+		如果=后添加的是方法，直接调用该方法并输出
+		请不要以;结尾
+		
+2、注释的问题
+	1）如果是java代码则支持//和/** */
+	2)如果是html，<!--     -->     此种注释在浏览器端查看网页源代码的时候可以看到
+	3)<%-- --%>   此种注释在查看网页源代码的时候不可以看到
+	
+3、<%@ page %>   page指令       放jsp页面的第一行
+	此指定可以出现多次
+	**language="java"
+	**contentType="text/html;charset=utf-8"
+	**pageEncoding="utf-8"
+	autoFLush="true|false"  是否自动刷新输出流，默认为true
+	**import="java.util.Calendar,java.util.Date"
+	extends="继承自某个类"   几乎不用
+	into="网页的描述信息"    几乎不用
+	isThreadSave="true" 是否为线程安全的   默认为true
+	buffer="8kb"   输出流缓冲大小
+	isELIgnored="false"   是否忽略掉EL表达式，默认为flase
+	*isErrorPage="false"   是否把页面设置成错误提示页   默认为false.   当请求某个jsp页面时出现了Java
+		错误，则Tomcat自动显示出错误提示页
+	*errorPage="error.jsp"   用于指定当前页面出现 了java错误后跳转到错误提示页
+	*session="true"   此页面是否支持session   默认为true
+	
+4、<%@ include %>  include指令
+	a.jsp要包含menu.jsp，则把menu.jsp内的内容直接copy到a.jsp指定的位置
+	file="某个文件" 用来指定包含的文件，不能使用查询字符串
+	
+	静态包含：@include指令把文件copy过来，再把jsp文件编译成servlet类。只会生成一个servlet。不能传递参数
+	动态包含：<jsp:include>不会把被包含的文件的内容copy过来，而是分开不同的文件进行编译操作。生成了两个servlet。可以传递参数
+	*****静态包含与动态包含，如果被包含的页面出现了java错误，则报错信息不一样。前者能够准确定位到被包含文件的错误位置，后者只会告诉你哪个被包含的文件有错误
+	
+5、<%@ taglib %>   taglib指令      放在page指令的后面
+	标签库指令
+	uri="http://jstl.com/core"    通过一个字符串找到某个资源（封装的方法）
+	prefix="c"     用一个简短的英文单词来引用指定的资源 
+	
+6、<jsp:include />    动态包含
+	<jsp:include page="">
+		<jsp:param name="" value=""/> 传递参数到被包含的文件
+	</jsp:include>
+	
+	在被包含的页面中可以使用request.getParameter();获取参数值
+	
+7、<jsp:forward /> 转发
+	转发：在服务端从一个页面转发到另外一个页面。显示出另外一个页面的内容
+		地址栏url不会变化，客户端浏览器不知道有没有换页面内容
+		request.getRequestDispatcher("/to.jsp").forward(request, response);先获取转发器再转发
+	此标签可以使用<jsp:param name="" value="" />传递参数到转发的页面，
+	通过request.getParameter();获取参数值 
+		
+	重定向：从一个页面重定向到另外一个页面。显示出另外一个页面的内容
+		地址栏url会变化，客户端相当于重新发送一个请求到服务端
+		response.sendRedirect("to1.jsp");
+		
+		状态码：302
+		
+	转发的效率高于重定向的效率
+
+8、<jsp:plugin />    可以加载Java应用小程序 
+	<jsp:param name="" value="" />
+
+
+9、脚本元素：<%=%>, <%%>, <%!%>
+	指令元素：<%@ page %>, <%@include %>, <%@ taglib %>
+	动作元素：<jsp:include />,<jsp:forward />, <jsp:plugin />, <jsp:param />
+			<jsp:useBean />, <jsp:setProperty />, <jsp:getProperty />
+
+	
