@@ -16,4 +16,9 @@ public class MyTest {
 		System.out.println(16);
 	}
 	
+	@Test
+	public void testTortoiseGitCommit() {
+		
+	}
+	
 }
