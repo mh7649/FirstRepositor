@@ -18,7 +18,7 @@ public class MyTest {
 	
 	@Test
 	public void testTortoiseGitCommit() {
-		
+		System.out.println(21);
 	}
 	
 }
