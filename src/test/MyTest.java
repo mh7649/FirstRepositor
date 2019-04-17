@@ -7,6 +7,7 @@ import org.junit.Test;
 public class MyTest {
 	
 	public static void main(String[] args) {
+		// 测试多用户提交
 		Calendar c = Calendar.getInstance();
 		System.out.println(c.get(Calendar.WEEK_OF_YEAR));
 	}
